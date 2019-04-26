@@ -29,8 +29,9 @@ def p_assignExp(p):
 
 def p_assignExp_const(p):
 	'assignExp : t_CONSTANT IDENTIFIER ASSIGN exp'
-	p[0] = ("assign", p[2], p[4])
+	p[0] = ("const_assign", p[2], p[4])
 
+#maybe changes need
 def p_arrayExp(p):
 	'arrayExp : ARRAY IDENTIFIER ASSIGN "[" member "]"'
 	p[0] = ("array", p[2],p[5])
@@ -45,8 +46,8 @@ def p_member2(p):
 	p[0] = (p[2],p[3])
 
 def p_loopExp(p):
-	'loopExp : LOOP IDENTIFIER ASSIGN "{" CONSTANT "," CONSTANT "," CONSTANT "}" stmt FINISH'
-	p[0] = ("loop", p[1], p[4], p[6], p[8], p[10])
+	'loopExp : LOOP IDENTIFIER ASSIGN "(" CONSTANT "," CONSTANT "," CONSTANT ")" stmt FINISH'
+	p[0] = ("loop", p[2], p[5], p[7], p[9], p[11])
 
 def p_cmpExp(p):
 	'cmpExp : CMP cond "{" stmt "}" '
@@ -104,7 +105,7 @@ def p_exp_normal(p):
   
 def p_exp_minus(p):
 	'exp : "-" exp'
-	p[0] = ('minus', p[1])
+	p[0] = ('minus', p[2])
 
 def p_exp_bracket(p):
 	'exp : "(" exp ")"'

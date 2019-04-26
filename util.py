@@ -29,6 +29,7 @@ asmleave = 'xor rax, rax\npop rbp\nret\n'
 
 
 global_var = []
+const_var = []
 
 global_str_counter = 0
 global_str = {}
@@ -79,6 +80,7 @@ def statement_main(stm):
         state_symbol = stm[0]
         switcher = {
             'assign': assign_routine,
+            'const_assign': const_assign_routine,
             'array': declare_arr,
             'loop':loop_routine,
             'cmp': cmp_routine, 
@@ -98,8 +100,8 @@ def get_type(symbol):
         return 'expression'
     if symbol == 'array':
         return 'ARRAY'
-    if symbol == 'input':
-        return 'INPUT'
+    # if symbol == 'input':
+    #     return 'INPUT'
     try:
         int(symbol)
         return 'CONSTANT'
@@ -108,9 +110,10 @@ def get_type(symbol):
 
 
 def get_var(symbol):
-    if symbol in global_var:
-        return symbol
-    print_error("Use of undeclare variable %s" % symbol)
+    if symbol not in global_var:
+        global_var.append(symbol)
+    # print_error("Use of undeclare variable %s" % symbol)
+    return symbol
 
 
 def get_str(text):
@@ -181,9 +184,18 @@ def declare_arr(var_name, args):
             asmdata += "%s times %s dq 0" % (var_name, args)
         asmdata += '\n'
 
+def const_assign_routine(dest,source):
+    # add to const_var
+    pass
+
 def assign_routine(dest, source):
     d_type = get_type(dest)
     s_type = get_type(source)
+    # check dest!=const_var
+    if dest in const_var:
+        print_error("Constant Variable Assigned")
+        return
+
     if s_type == 'CONSTANT':
         add_text('mov rax, ' + source)
     elif s_type == 'ID':
