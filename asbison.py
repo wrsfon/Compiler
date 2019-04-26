@@ -29,7 +29,7 @@ def p_assignExp(p):
 
 def p_assignExp_const(p):
 	'assignExp : t_CONSTANT IDENTIFIER ASSIGN exp'
-	p[0] = ("const_assign", p[2], p[4])
+	p[0] = ("assign", p[2], p[4])
 
 def p_arrayExp(p):
 	'arrayExp : ARRAY IDENTIFIER ASSIGN "[" member "]"'
@@ -54,8 +54,14 @@ def p_cmpExp(p):
 
 def p_val(p):
 	'''val : IDENTIFIER 
-			| CONSTANT'''
+			| CONSTANT
+			| array_val'''
 	p[0] = p[1]
+
+def p_val_arr(p):
+	'''array_val : IDENTIFIER "[" CONSTANT "]"
+				| IDENTIFIER "[" IDENTIFIER "]"'''
+	p[0] = ('array_val',p[1],p[3])
 
 def p_exp_val(p):
 	'exp : val'
@@ -74,6 +80,10 @@ def p_cond_less(p):
 def p_cond_more(p):
 	'cond : exp ">" exp'
 	p[0] = ('>', p[1], p[3])
+
+def p_cond_eq(p):
+	'cond : exp "=" exp'
+	p[0] = ('equal', p[1], p[3])
 
 def p_cond_noteq(p):
 	'cond : exp NOTEQ exp'

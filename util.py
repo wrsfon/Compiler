@@ -68,8 +68,28 @@ add_text(main_entry)
 add_text("push rbp")
 
 
-cmp_symbol = ['==', '!=', '>', '<', '>=', '<=', '&&']
+cmp_symbol = ['=', '!=', '>', '<']
 
+def multiple_stm_routine(stm1, stm2):
+    statement_main(stm1)
+    statement_main(stm2)
+
+def statement_main(stm):
+    try:
+        state_symbol = stm[0]
+        switcher = {
+            'assign': assign_routine,
+            'array': declare_arr,
+            'loop':loop_routine,
+            'cmp': cmp_routine, 
+            'show': show_routine
+        }
+        func = switcher[state_symbol]
+        func(stm[1], stm[2])
+    except SystemExit:
+        sys.exit(1)
+    except:
+        pass
 
 def get_type(symbol):
     if type(symbol) is tuple:
@@ -106,21 +126,6 @@ def get_array_id(arr):
     add_text('imul rcx, 8')
     add_text('add rbx, rcx')
 
-
-def print_error(error_str, show_line=True):
-    if show_line:
-        print("ERROR : %s At line %d" % (error_str, lexer.lineno))
-    else:
-        print("ERROR : %s" % error_str)
-    sys.exit(1)
-
-
-def error_token():
-    # caller = getframeinfo(stack()[1][0])
-    # print("Error line : " + str(caller.lineno))
-    print_error("Unexpected token")
-
-
 def declare_var(var_name, value=0):
     global asmdata
     if var_name in global_var:
@@ -130,7 +135,7 @@ def declare_var(var_name, value=0):
         val_type = get_type(value)
         if val_type == 'INPUT':
             asmdata += "%s dq 0\n" % var_name
-            input_routine()
+            # input_routine()
             add_text("mov [%s], rax" % var_name)
         elif val_type == 'CONSTANT':
             asmdata += "%s dq %s\n" % (var_name, value)
@@ -176,15 +181,37 @@ def declare_arr(var_name, args):
             asmdata += "%s times %s dq 0" % (var_name, args)
         asmdata += '\n'
 
+def assign_routine(dest, source):
+    d_type = get_type(dest)
+    s_type = get_type(source)
+    if s_type == 'CONSTANT':
+        add_text('mov rax, ' + source)
+    elif s_type == 'ID':
+        get_var(source)
+        add_text('mov rax, [%s]' % source)
+    elif s_type == 'expression':
+        expression_main(source)
+    # elif s_type == 'INPUT':
+    #     input_routine()
+    elif s_type == 'ARRAY':
+        index_type = get_type(source[2]) #check structure
+        get_var(source[1]) #check structure
+        if index_type == 'ID':
+            get_array_id(source)
+            add_text('mov rax, [rbx]')
+        elif index_type == 'CONSTANT':
+            add_text('mov rax, [%s + %s * 8]' % (source[1], source[2]))
 
-def multiple_stm_routine(stm1, stm2):
-    statement_main(stm1)
-    statement_main(stm2)
-
-
-def ifelse_routine(ifstm, else_stm):
-    if_routine(ifstm[1], ifstm[2], else_stm=else_stm)
-    else_routine(else_stm)
+    if d_type == 'ARRAY':
+        index_type = get_type(dest[2])
+        if index_type == 'ID':
+            get_array_id(dest)
+            add_text('mov [rbx], rax')
+        elif index_type == 'CONSTANT':
+            add_text('mov [%s + %s * 8], rax' % (dest[1], dest[2]))
+    else:
+        get_var(dest)
+        add_text('mov [%s], rax' % dest)
 
 
 def if_routine(exp, stm, else_stm=None):
@@ -221,30 +248,10 @@ def while_routine(exp, stm):
     add_text("_L%d:" % exit_c)
     global_if_counter += 1
 
-
-def statement_main(stm):
-    try:
-        state_symbol = stm[0]
-        switcher = {
-            'assign': assign_routine,
-            'const_assign': assign_routine,
-            'array': declare_arr,
-            'loop':loop_routine,
-            'cmp': cmp_routine, 
-            'show': show_routine
-        }
-        func = switcher[state_symbol]
-        func(stm[1], stm[2])
-    except SystemExit:
-        sys.exit(1)
-    except:
-        pass
-
-
 def expression_main(exp, count=0):
     t = exp[0]
     if t in cmp_symbol:
-        cmp_main(exp)
+        cmp_main(exp) #error
     else:
         switcher = {
             '+': plus_routine,
@@ -257,66 +264,8 @@ def expression_main(exp, count=0):
         func = switcher[t]
         func(exp[1], exp[2], count)
 
-
-def cmp_main(cmp_e):
-    global global_if_counter
-    t = cmp_e[0]
-    a = cmp_e[1]
-    b = cmp_e[2]
-    type_a = get_type(a)
-    type_b = get_type(b)
-    if type_a == 'expression':
-        expression_main(a)
-    elif type_a == 'ID':
-        get_var(a)
-        add_text("mov rax, [%s]" % a)
-    elif type_a == 'CONSTANT':
-        add_text("mov rax, %s" % a)
-    elif type_a == 'ARRAY':
-        index_type = get_type(a[2])
-        get_var(a[1])
-        if index_type == 'ID':
-            get_array_id(a)
-            add_text('mov rax, [rbx]')
-        elif index_type == 'CONSTANT':
-            add_text('mov rax, [%s + %s * 8]' % (a[1], a[2]))
-        else:
-            error_token()
-
-    if type_b == 'expression':
-        expression_main(b)
-    elif type_b == 'ID':
-        get_var(b)
-        add_text("mov rbx, [%s]" % b)
-    elif type_b == 'CONSTANT':
-        add_text("mov rbx, %s" % b)
-    elif type_b == 'ARRAY':
-        index_type = get_type(b[2])
-        if index_type == 'ID':
-            get_array_id(b)
-            add_text('mov rbx, [rbx]')
-        elif index_type == 'CONSTANT':
-            add_text('mov rbx, [%s + %s * 8]' % (b[1], b[2]))
-        else:
-            error_token()
-
-    if t != '&&':
-        add_text("cmp rax, rbx")
-    switcher = {
-        '==': equal_routine,
-        '>': greater_routine,
-        '<': less_routine,
-        '<=': less_equ_routine,
-        '>=': greater_equ_routine,
-        '!=': not_equal_routine,
-        '&&': and_routine
-    }
-    func = switcher[t]
-    func()
-
-
-def input_routine():
-    add_text("call _input")
+# def input_routine():
+#     add_text("call _input")
 
 
 def sleep_routine(mc, _):
@@ -369,40 +318,6 @@ def print_routine(fmt, arg):
     add_text("call " + printf_label)
     add_text("xor %s, %s" % (reg_order[0], reg_order[0]))
     add_text("call " + fflush_label)
-
-
-def assign_routine(dest, source):
-    d_type = get_type(dest)
-    s_type = get_type(source)
-    if s_type == 'CONSTANT':
-        add_text('mov rax, ' + source)
-    elif s_type == 'ID':
-        get_var(source)
-        add_text('mov rax, [%s]' % source)
-    elif s_type == 'expression':
-        expression_main(source)
-    elif s_type == 'INPUT':
-        input_routine()
-    elif s_type == 'ARRAY':
-        index_type = get_type(source[2])
-        get_var(source[1])
-        if index_type == 'ID':
-            get_array_id(source)
-            add_text('mov rax, [rbx]')
-        elif index_type == 'CONSTANT':
-            add_text('mov rax, [%s + %s * 8]' % (source[1], source[2]))
-
-    if d_type == 'ARRAY':
-        index_type = get_type(dest[2])
-        if index_type == 'ID':
-            get_array_id(dest)
-            add_text('mov [rbx], rax')
-        elif index_type == 'CONSTANT':
-            add_text('mov [%s + %s * 8], rax' % (dest[1], dest[2]))
-    else:
-        get_var(dest)
-        add_text('mov [%s], rax' % dest)
-
 
 def plus_routine(a, b, count=0):
     a_type = get_type(a)
@@ -688,18 +603,58 @@ def mod_routine(a, b, count=0):
     else:
         error_token()
 
+def cmp_main(cmp_e):
+    global global_if_counter
+    t = cmp_e[0]
+    a = cmp_e[1]
+    b = cmp_e[2]
+    type_a = get_type(a)
+    type_b = get_type(b)
+    if type_a == 'expression':
+        expression_main(a)
+    elif type_a == 'ID':
+        get_var(a)
+        add_text("mov rax, [%s]" % a)
+    elif type_a == 'CONSTANT':
+        add_text("mov rax, %s" % a)
+    elif type_a == 'ARRAY':
+        index_type = get_type(a[2])
+        get_var(a[1])
+        if index_type == 'ID':
+            get_array_id(a)
+            add_text('mov rax, [rbx]')
+        elif index_type == 'CONSTANT':
+            add_text('mov rax, [%s + %s * 8]' % (a[1], a[2]))
+        else:
+            error_token()
 
-def and_routine():
-    pass
+    if type_b == 'expression':
+        expression_main(b)
+    elif type_b == 'ID':
+        get_var(b)
+        add_text("mov rbx, [%s]" % b)
+    elif type_b == 'CONSTANT':
+        add_text("mov rbx, %s" % b)
+    elif type_b == 'ARRAY':
+        index_type = get_type(b[2])
+        if index_type == 'ID':
+            get_array_id(b)
+            add_text('mov rbx, [rbx]')
+        elif index_type == 'CONSTANT':
+            add_text('mov rbx, [%s + %s * 8]' % (b[1], b[2]))
+        else:
+            error_token()
 
-
-def less_equ_routine():
-    add_text("jg _L%d" % global_if_counter)
-
-
-def greater_equ_routine():
-    add_text("jl _L%d" % global_if_counter)
-
+    if t != '&&':
+        add_text("cmp rax, rbx")
+    switcher = {
+        '=': equal_routine,
+        '>': greater_routine,
+        '<': less_routine,
+        '!=': not_equal_routine
+    }
+    func = switcher[t]
+    func()
 
 def less_routine():
     add_text("jge _L%d" % global_if_counter)
@@ -712,6 +667,15 @@ def greater_routine():
 def not_equal_routine():
     add_text("je _L%d" % global_if_counter)
 
-
 def equal_routine():
     add_text("jne _L%d" % global_if_counter)
+
+def error_token():
+    print_error("Unexpected token")
+
+def print_error(error_str, show_line=True):
+    if show_line:
+        print("ERROR : %s At line %d" % (error_str, lexer.lineno))
+    else:
+        print("ERROR : %s" % error_str)
+    sys.exit(1)

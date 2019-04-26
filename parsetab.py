@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftNOTEQleft+-left*/%left><ARRAY ASSIGN CMP CONSTANT FINISH IDENTIFIER LOOP NEWLINE NOTEQ SHOW STRING t_CONSTANTstmt : stmt stmt stmt : assignExp "."\n\t\t\t| arrayExp "."\n\t\t\t| showExp "."\n\t\t\t| cmpExp "."\n\t\t\t| loopExp "." arrayExp : ARRAY IDENTIFIER ASSIGN "[" member "]"member : CONSTANT member2member2 : "," CONSTANT member2\n\t\t\t\t\t\t\t| empty empty emptyloopExp : LOOP IDENTIFIER ASSIGN "{" CONSTANT "," CONSTANT "," CONSTANT "}" stmt FINISHcmpExp : CMP cond "{" stmt "}" val : IDENTIFIER \n\t\t\t| CONSTANTexp : valassignExp : IDENTIFIER ASSIGN expassignExp : t_CONSTANT IDENTIFIER ASSIGN expshowExp : SHOW CONSTANT \n\t\t\t | SHOW IDENTIFIER\n\t\t\t | SHOW STRINGcond : exp "<" expcond : exp ">" expcond : exp NOTEQ expexp : exp "+" exp\n\t\t\t| exp "-" exp\n\t\t\t| exp "/" exp\n\t\t\t| exp "*" exp\n\t\t\t| exp "%" exp\n\t\t\t| val "+" val\n\t\t\t| val "-" val\n\t\t\t| val "/" val\n\t\t\t| val "*" val\n\t\t\t| val "%" valexp : "-" expexp : "(" exp ")"empty :'
+_lr_signature = 'leftNOTEQleft+-left*/%left><ARRAY ASSIGN CMP CONSTANT FINISH IDENTIFIER LOOP NEWLINE NOTEQ SHOW STRING t_CONSTANTstmt : stmt stmt stmt : assignExp "."\n\t\t\t| arrayExp "."\n\t\t\t| showExp "."\n\t\t\t| cmpExp "."\n\t\t\t| loopExp "." assignExp : IDENTIFIER ASSIGN expassignExp : t_CONSTANT IDENTIFIER ASSIGN exparrayExp : ARRAY IDENTIFIER ASSIGN "[" member "]"member : CONSTANT member2member2 : "," CONSTANT member2\n\t\t\t\t\t\t\t| empty empty emptyloopExp : LOOP IDENTIFIER ASSIGN "{" CONSTANT "," CONSTANT "," CONSTANT "}" stmt FINISHcmpExp : CMP cond "{" stmt "}" val : IDENTIFIER \n\t\t\t| CONSTANT\n\t\t\t| array_valarray_val : IDENTIFIER "[" CONSTANT "]"\n\t\t\t\t| IDENTIFIER "[" IDENTIFIER "]"exp : valshowExp : SHOW CONSTANT \n\t\t\t | SHOW IDENTIFIER\n\t\t\t | SHOW STRINGcond : exp "<" expcond : exp ">" expcond : exp "=" expcond : exp NOTEQ expexp : exp "+" exp\n\t\t\t| exp "-" exp\n\t\t\t| exp "/" exp\n\t\t\t| exp "*" exp\n\t\t\t| exp "%" exp\n\t\t\t| val "+" val\n\t\t\t| val "-" val\n\t\t\t| val "/" val\n\t\t\t| val "*" val\n\t\t\t| val "%" valexp : "-" expexp : "(" exp ")"empty :'
     
-_lr_action_items = {'IDENTIFIER':([0,1,8,9,10,11,12,13,14,15,16,17,18,19,28,29,34,36,37,38,39,40,41,42,43,44,45,46,47,48,49,55,87,88,],[7,7,20,21,23,30,32,7,-2,-3,-4,-5,-6,30,30,30,30,7,30,30,30,30,30,30,30,30,30,30,30,30,30,7,7,7,]),'t_CONSTANT':([0,1,13,14,15,16,17,18,36,55,87,88,],[8,8,8,-2,-3,-4,-5,-6,8,8,8,8,]),'ARRAY':([0,1,13,14,15,16,17,18,36,55,87,88,],[9,9,9,-2,-3,-4,-5,-6,9,9,9,9,]),'SHOW':([0,1,13,14,15,16,17,18,36,55,87,88,],[10,10,10,-2,-3,-4,-5,-6,10,10,10,10,]),'CMP':([0,1,13,14,15,16,17,18,36,55,87,88,],[11,11,11,-2,-3,-4,-5,-6,11,11,11,11,]),'LOOP':([0,1,13,14,15,16,17,18,36,55,87,88,],[12,12,12,-2,-3,-4,-5,-6,12,12,12,12,]),'$end':([1,13,14,15,16,17,18,],[0,-1,-2,-3,-4,-5,-6,]),'.':([2,3,4,5,6,22,23,24,27,30,31,33,50,53,59,60,61,62,63,64,65,66,67,68,69,73,75,89,],[14,15,16,17,18,-18,-19,-20,-15,-13,-14,-16,-34,-17,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-35,-12,-7,-11,]),'ASSIGN':([7,20,21,32,],[19,34,35,52,]),'CONSTANT':([10,11,19,28,29,34,37,38,39,40,41,42,43,44,45,46,47,48,49,54,70,77,79,85,],[22,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,72,74,80,82,86,]),'STRING':([10,],[24,]),'-':([11,19,26,27,28,29,30,31,33,34,37,38,39,40,41,42,43,44,50,51,53,56,57,58,59,60,61,62,63,64,65,66,67,68,69,],[28,28,41,46,28,28,-13,-14,41,28,28,28,28,28,28,28,28,28,-34,41,41,41,41,41,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'(':([11,19,28,29,34,37,38,39,40,41,42,43,44,],[29,29,29,29,29,29,29,29,29,29,29,29,29,]),'}':([13,14,15,16,17,18,55,86,],[-1,-2,-3,-4,-5,-6,73,87,]),'FINISH':([13,14,15,16,17,18,88,],[-1,-2,-3,-4,-5,-6,89,]),'{':([25,27,30,31,50,52,56,57,58,59,60,61,62,63,64,65,66,67,68,69,],[36,-15,-13,-14,-34,70,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'<':([26,27,30,31,50,59,60,61,62,63,64,65,66,67,68,69,],[37,-15,-13,-14,-34,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'>':([26,27,30,31,50,59,60,61,62,63,64,65,66,67,68,69,],[38,-15,-13,-14,-34,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'NOTEQ':([26,27,30,31,50,59,60,61,62,63,64,65,66,67,68,69,],[39,-15,-13,-14,-34,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'+':([26,27,30,31,33,50,51,53,56,57,58,59,60,61,62,63,64,65,66,67,68,69,],[40,45,-13,-14,40,-34,40,40,40,40,40,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'/':([26,27,30,31,33,50,51,53,56,57,58,59,60,61,62,63,64,65,66,67,68,69,],[42,47,-13,-14,42,42,42,42,42,42,42,42,42,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'*':([26,27,30,31,33,50,51,53,56,57,58,59,60,61,62,63,64,65,66,67,68,69,],[43,48,-13,-14,43,43,43,43,43,43,43,43,43,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'%':([26,27,30,31,33,50,51,53,56,57,58,59,60,61,62,63,64,65,66,67,68,69,],[44,49,-13,-14,44,44,44,44,44,44,44,44,44,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),')':([27,30,31,50,51,59,60,61,62,63,64,65,66,67,68,69,],[-15,-13,-14,-34,69,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-35,]),'[':([35,],[54,]),']':([71,72,76,78,80,81,83,84,],[75,-36,-8,-36,-36,-36,-9,-10,]),',':([72,74,80,82,],[77,79,77,85,]),}
+_lr_action_items = {'IDENTIFIER':([0,1,8,9,10,11,12,13,14,15,16,17,18,19,28,29,35,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,54,58,95,96,],[7,7,20,21,23,30,33,7,-2,-3,-4,-5,-6,30,30,30,30,7,30,30,30,30,30,30,30,30,30,30,30,30,30,30,74,7,7,7,]),'t_CONSTANT':([0,1,13,14,15,16,17,18,37,58,95,96,],[8,8,8,-2,-3,-4,-5,-6,8,8,8,8,]),'ARRAY':([0,1,13,14,15,16,17,18,37,58,95,96,],[9,9,9,-2,-3,-4,-5,-6,9,9,9,9,]),'SHOW':([0,1,13,14,15,16,17,18,37,58,95,96,],[10,10,10,-2,-3,-4,-5,-6,10,10,10,10,]),'CMP':([0,1,13,14,15,16,17,18,37,58,95,96,],[11,11,11,-2,-3,-4,-5,-6,11,11,11,11,]),'LOOP':([0,1,13,14,15,16,17,18,37,58,95,96,],[12,12,12,-2,-3,-4,-5,-6,12,12,12,12,]),'$end':([1,13,14,15,16,17,18,],[0,-1,-2,-3,-4,-5,-6,]),'.':([2,3,4,5,6,22,23,24,27,30,31,32,34,52,56,63,64,65,66,67,68,69,70,71,72,73,79,80,81,83,97,],[14,15,16,17,18,-21,-22,-23,-20,-15,-16,-17,-7,-38,-8,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-14,-19,-18,-9,-13,]),'ASSIGN':([7,20,21,33,],[19,35,36,55,]),'CONSTANT':([10,11,19,28,29,35,38,39,40,41,42,43,44,45,46,47,48,49,50,51,54,57,76,85,87,93,],[22,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,75,78,82,88,90,94,]),'STRING':([10,],[24,]),'-':([11,19,26,27,28,29,30,31,32,34,35,38,39,40,41,42,43,44,45,46,52,53,56,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,80,81,],[28,28,43,48,28,28,-15,-16,-17,43,28,28,28,28,28,28,28,28,28,28,-38,43,43,43,43,43,43,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'(':([11,19,28,29,35,38,39,40,41,42,43,44,45,46,],[29,29,29,29,29,29,29,29,29,29,29,29,29,29,]),'}':([13,14,15,16,17,18,58,94,],[-1,-2,-3,-4,-5,-6,79,95,]),'FINISH':([13,14,15,16,17,18,96,],[-1,-2,-3,-4,-5,-6,97,]),'{':([25,27,30,31,32,52,55,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,80,81,],[37,-20,-15,-16,-17,-38,76,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'<':([26,27,30,31,32,52,63,64,65,66,67,68,69,70,71,72,73,80,81,],[38,-20,-15,-16,-17,-38,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'>':([26,27,30,31,32,52,63,64,65,66,67,68,69,70,71,72,73,80,81,],[39,-20,-15,-16,-17,-38,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'=':([26,27,30,31,32,52,63,64,65,66,67,68,69,70,71,72,73,80,81,],[40,-20,-15,-16,-17,-38,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'NOTEQ':([26,27,30,31,32,52,63,64,65,66,67,68,69,70,71,72,73,80,81,],[41,-20,-15,-16,-17,-38,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'+':([26,27,30,31,32,34,52,53,56,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,80,81,],[42,47,-15,-16,-17,42,-38,42,42,42,42,42,42,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'/':([26,27,30,31,32,34,52,53,56,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,80,81,],[44,49,-15,-16,-17,44,44,44,44,44,44,44,44,44,44,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'*':([26,27,30,31,32,34,52,53,56,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,80,81,],[45,50,-15,-16,-17,45,45,45,45,45,45,45,45,45,45,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'%':([26,27,30,31,32,34,52,53,56,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,80,81,],[46,51,-15,-16,-17,46,46,46,46,46,46,46,46,46,46,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),')':([27,30,31,32,52,53,63,64,65,66,67,68,69,70,71,72,73,80,81,],[-20,-15,-16,-17,-38,73,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-39,-19,-18,]),'[':([30,36,],[54,57,]),']':([74,75,77,78,84,86,88,89,91,92,],[80,81,83,-40,-10,-40,-40,-40,-11,-12,]),',':([78,82,88,90,],[85,87,85,93,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'stmt':([0,1,13,36,55,87,88,],[1,13,13,55,13,88,13,]),'assignExp':([0,1,13,36,55,87,88,],[2,2,2,2,2,2,2,]),'arrayExp':([0,1,13,36,55,87,88,],[3,3,3,3,3,3,3,]),'showExp':([0,1,13,36,55,87,88,],[4,4,4,4,4,4,4,]),'cmpExp':([0,1,13,36,55,87,88,],[5,5,5,5,5,5,5,]),'loopExp':([0,1,13,36,55,87,88,],[6,6,6,6,6,6,6,]),'cond':([11,],[25,]),'exp':([11,19,28,29,34,37,38,39,40,41,42,43,44,],[26,33,50,51,53,56,57,58,59,60,61,62,63,]),'val':([11,19,28,29,34,37,38,39,40,41,42,43,44,45,46,47,48,49,],[27,27,27,27,27,27,27,27,27,27,27,27,27,64,65,66,67,68,]),'member':([54,],[71,]),'member2':([72,80,],[76,83,]),'empty':([72,78,80,81,],[78,81,78,84,]),}
+_lr_goto_items = {'stmt':([0,1,13,37,58,95,96,],[1,13,13,58,13,96,13,]),'assignExp':([0,1,13,37,58,95,96,],[2,2,2,2,2,2,2,]),'arrayExp':([0,1,13,37,58,95,96,],[3,3,3,3,3,3,3,]),'showExp':([0,1,13,37,58,95,96,],[4,4,4,4,4,4,4,]),'cmpExp':([0,1,13,37,58,95,96,],[5,5,5,5,5,5,5,]),'loopExp':([0,1,13,37,58,95,96,],[6,6,6,6,6,6,6,]),'cond':([11,],[25,]),'exp':([11,19,28,29,35,38,39,40,41,42,43,44,45,46,],[26,34,52,53,56,59,60,61,62,63,64,65,66,67,]),'val':([11,19,28,29,35,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[27,27,27,27,27,27,27,27,27,27,27,27,27,27,68,69,70,71,72,]),'array_val':([11,19,28,29,35,38,39,40,41,42,43,44,45,46,47,48,49,50,51,],[32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,]),'member':([57,],[77,]),'member2':([78,88,],[84,91,]),'empty':([78,86,88,89,],[86,89,86,92,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -33,34 +33,38 @@ _lr_productions = [
   ('stmt -> showExp .','stmt',2,'p_stmt','asbison.py',21),
   ('stmt -> cmpExp .','stmt',2,'p_stmt','asbison.py',22),
   ('stmt -> loopExp .','stmt',2,'p_stmt','asbison.py',23),
-  ('arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ]','arrayExp',6,'p_arrayExp','asbison.py',27),
-  ('member -> CONSTANT member2','member',2,'p_member','asbison.py',31),
-  ('member2 -> , CONSTANT member2','member2',3,'p_member2','asbison.py',35),
-  ('member2 -> empty empty empty','member2',3,'p_member2','asbison.py',36),
-  ('loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH','loopExp',12,'p_loopExp','asbison.py',40),
-  ('cmpExp -> CMP cond { stmt }','cmpExp',5,'p_cmpExp','asbison.py',44),
-  ('val -> IDENTIFIER','val',1,'p_val','asbison.py',48),
-  ('val -> CONSTANT','val',1,'p_val','asbison.py',49),
-  ('exp -> val','exp',1,'p_exp_val','asbison.py',53),
-  ('assignExp -> IDENTIFIER ASSIGN exp','assignExp',3,'p_assignExp','asbison.py',57),
-  ('assignExp -> t_CONSTANT IDENTIFIER ASSIGN exp','assignExp',4,'p_assignExp_const','asbison.py',61),
-  ('showExp -> SHOW CONSTANT','showExp',2,'p_showExp','asbison.py',65),
-  ('showExp -> SHOW IDENTIFIER','showExp',2,'p_showExp','asbison.py',66),
-  ('showExp -> SHOW STRING','showExp',2,'p_showExp','asbison.py',67),
-  ('cond -> exp < exp','cond',3,'p_cond_less','asbison.py',71),
-  ('cond -> exp > exp','cond',3,'p_cond_more','asbison.py',75),
-  ('cond -> exp NOTEQ exp','cond',3,'p_cond_noteq','asbison.py',79),
-  ('exp -> exp + exp','exp',3,'p_exp_normal','asbison.py',83),
-  ('exp -> exp - exp','exp',3,'p_exp_normal','asbison.py',84),
-  ('exp -> exp / exp','exp',3,'p_exp_normal','asbison.py',85),
-  ('exp -> exp * exp','exp',3,'p_exp_normal','asbison.py',86),
-  ('exp -> exp % exp','exp',3,'p_exp_normal','asbison.py',87),
-  ('exp -> val + val','exp',3,'p_exp_normal','asbison.py',88),
-  ('exp -> val - val','exp',3,'p_exp_normal','asbison.py',89),
-  ('exp -> val / val','exp',3,'p_exp_normal','asbison.py',90),
-  ('exp -> val * val','exp',3,'p_exp_normal','asbison.py',91),
-  ('exp -> val % val','exp',3,'p_exp_normal','asbison.py',92),
-  ('exp -> - exp','exp',2,'p_exp_minus','asbison.py',96),
-  ('exp -> ( exp )','exp',3,'p_exp_bracket','asbison.py',100),
-  ('empty -> <empty>','empty',0,'p_empty','asbison.py',104),
+  ('assignExp -> IDENTIFIER ASSIGN exp','assignExp',3,'p_assignExp','asbison.py',27),
+  ('assignExp -> t_CONSTANT IDENTIFIER ASSIGN exp','assignExp',4,'p_assignExp_const','asbison.py',31),
+  ('arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ]','arrayExp',6,'p_arrayExp','asbison.py',35),
+  ('member -> CONSTANT member2','member',2,'p_member','asbison.py',39),
+  ('member2 -> , CONSTANT member2','member2',3,'p_member2','asbison.py',43),
+  ('member2 -> empty empty empty','member2',3,'p_member2','asbison.py',44),
+  ('loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH','loopExp',12,'p_loopExp','asbison.py',48),
+  ('cmpExp -> CMP cond { stmt }','cmpExp',5,'p_cmpExp','asbison.py',52),
+  ('val -> IDENTIFIER','val',1,'p_val','asbison.py',56),
+  ('val -> CONSTANT','val',1,'p_val','asbison.py',57),
+  ('val -> array_val','val',1,'p_val','asbison.py',58),
+  ('array_val -> IDENTIFIER [ CONSTANT ]','array_val',4,'p_val_arr','asbison.py',62),
+  ('array_val -> IDENTIFIER [ IDENTIFIER ]','array_val',4,'p_val_arr','asbison.py',63),
+  ('exp -> val','exp',1,'p_exp_val','asbison.py',67),
+  ('showExp -> SHOW CONSTANT','showExp',2,'p_showExp','asbison.py',71),
+  ('showExp -> SHOW IDENTIFIER','showExp',2,'p_showExp','asbison.py',72),
+  ('showExp -> SHOW STRING','showExp',2,'p_showExp','asbison.py',73),
+  ('cond -> exp < exp','cond',3,'p_cond_less','asbison.py',77),
+  ('cond -> exp > exp','cond',3,'p_cond_more','asbison.py',81),
+  ('cond -> exp = exp','cond',3,'p_cond_eq','asbison.py',85),
+  ('cond -> exp NOTEQ exp','cond',3,'p_cond_noteq','asbison.py',89),
+  ('exp -> exp + exp','exp',3,'p_exp_normal','asbison.py',93),
+  ('exp -> exp - exp','exp',3,'p_exp_normal','asbison.py',94),
+  ('exp -> exp / exp','exp',3,'p_exp_normal','asbison.py',95),
+  ('exp -> exp * exp','exp',3,'p_exp_normal','asbison.py',96),
+  ('exp -> exp % exp','exp',3,'p_exp_normal','asbison.py',97),
+  ('exp -> val + val','exp',3,'p_exp_normal','asbison.py',98),
+  ('exp -> val - val','exp',3,'p_exp_normal','asbison.py',99),
+  ('exp -> val / val','exp',3,'p_exp_normal','asbison.py',100),
+  ('exp -> val * val','exp',3,'p_exp_normal','asbison.py',101),
+  ('exp -> val % val','exp',3,'p_exp_normal','asbison.py',102),
+  ('exp -> - exp','exp',2,'p_exp_minus','asbison.py',106),
+  ('exp -> ( exp )','exp',3,'p_exp_bracket','asbison.py',110),
+  ('empty -> <empty>','empty',0,'p_empty','asbison.py',114),
 ]

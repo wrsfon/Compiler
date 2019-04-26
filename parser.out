@@ -13,82 +13,88 @@ Rule 3     stmt -> arrayExp .
 Rule 4     stmt -> showExp .
 Rule 5     stmt -> cmpExp .
 Rule 6     stmt -> loopExp .
-Rule 7     arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ]
-Rule 8     member -> CONSTANT member2
-Rule 9     member2 -> , CONSTANT member2
-Rule 10    member2 -> empty empty empty
-Rule 11    loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
-Rule 12    cmpExp -> CMP cond { stmt }
-Rule 13    val -> IDENTIFIER
-Rule 14    val -> CONSTANT
-Rule 15    exp -> val
-Rule 16    assignExp -> IDENTIFIER ASSIGN exp
-Rule 17    assignExp -> t_CONSTANT IDENTIFIER ASSIGN exp
-Rule 18    showExp -> SHOW CONSTANT
-Rule 19    showExp -> SHOW IDENTIFIER
-Rule 20    showExp -> SHOW STRING
-Rule 21    cond -> exp < exp
-Rule 22    cond -> exp > exp
-Rule 23    cond -> exp NOTEQ exp
-Rule 24    exp -> exp + exp
-Rule 25    exp -> exp - exp
-Rule 26    exp -> exp / exp
-Rule 27    exp -> exp * exp
-Rule 28    exp -> exp % exp
-Rule 29    exp -> val + val
-Rule 30    exp -> val - val
-Rule 31    exp -> val / val
-Rule 32    exp -> val * val
-Rule 33    exp -> val % val
-Rule 34    exp -> - exp
-Rule 35    exp -> ( exp )
-Rule 36    empty -> <empty>
+Rule 7     assignExp -> IDENTIFIER ASSIGN exp
+Rule 8     assignExp -> t_CONSTANT IDENTIFIER ASSIGN exp
+Rule 9     arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ]
+Rule 10    member -> CONSTANT member2
+Rule 11    member2 -> , CONSTANT member2
+Rule 12    member2 -> empty empty empty
+Rule 13    loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+Rule 14    cmpExp -> CMP cond { stmt }
+Rule 15    val -> IDENTIFIER
+Rule 16    val -> CONSTANT
+Rule 17    val -> array_val
+Rule 18    array_val -> IDENTIFIER [ CONSTANT ]
+Rule 19    array_val -> IDENTIFIER [ IDENTIFIER ]
+Rule 20    exp -> val
+Rule 21    showExp -> SHOW CONSTANT
+Rule 22    showExp -> SHOW IDENTIFIER
+Rule 23    showExp -> SHOW STRING
+Rule 24    cond -> exp < exp
+Rule 25    cond -> exp > exp
+Rule 26    cond -> exp = exp
+Rule 27    cond -> exp NOTEQ exp
+Rule 28    exp -> exp + exp
+Rule 29    exp -> exp - exp
+Rule 30    exp -> exp / exp
+Rule 31    exp -> exp * exp
+Rule 32    exp -> exp % exp
+Rule 33    exp -> val + val
+Rule 34    exp -> val - val
+Rule 35    exp -> val / val
+Rule 36    exp -> val * val
+Rule 37    exp -> val % val
+Rule 38    exp -> - exp
+Rule 39    exp -> ( exp )
+Rule 40    empty -> <empty>
 
 Terminals, with rules where they appear
 
-%                    : 28 33
-(                    : 35
-)                    : 35
-*                    : 27 32
-+                    : 24 29
-,                    : 9 11 11
--                    : 25 30 34
+%                    : 32 37
+(                    : 39
+)                    : 39
+*                    : 31 36
++                    : 28 33
+,                    : 11 13 13
+-                    : 29 34 38
 .                    : 2 3 4 5 6
-/                    : 26 31
-<                    : 21
->                    : 22
-ARRAY                : 7
-ASSIGN               : 7 11 16 17
-CMP                  : 12
-CONSTANT             : 8 9 11 11 11 14 18
-FINISH               : 11
-IDENTIFIER           : 7 11 13 16 17 19
-LOOP                 : 11
+/                    : 30 35
+<                    : 24
+=                    : 26
+>                    : 25
+ARRAY                : 9
+ASSIGN               : 7 8 9 13
+CMP                  : 14
+CONSTANT             : 10 11 13 13 13 16 18 21
+FINISH               : 13
+IDENTIFIER           : 7 8 9 13 15 18 19 19 22
+LOOP                 : 13
 NEWLINE              : 
-NOTEQ                : 23
-SHOW                 : 18 19 20
-STRING               : 20
-[                    : 7
-]                    : 7
+NOTEQ                : 27
+SHOW                 : 21 22 23
+STRING               : 23
+[                    : 9 18 19
+]                    : 9 18 19
 error                : 
-t_CONSTANT           : 17
-{                    : 11 12
-}                    : 11 12
+t_CONSTANT           : 8
+{                    : 13 14
+}                    : 13 14
 
 Nonterminals, with rules where they appear
 
 arrayExp             : 3
+array_val            : 17
 assignExp            : 2
 cmpExp               : 5
-cond                 : 12
-empty                : 10 10 10
-exp                  : 16 17 21 21 22 22 23 23 24 24 25 25 26 26 27 27 28 28 34 35
+cond                 : 14
+empty                : 12 12 12
+exp                  : 7 8 24 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 32 38 39
 loopExp              : 6
-member               : 7
-member2              : 8 9
+member               : 9
+member2              : 10 11
 showExp              : 4
-stmt                 : 1 1 11 12 0
-val                  : 15 29 29 30 30 31 31 32 32 33 33
+stmt                 : 1 1 13 14 0
+val                  : 20 33 33 34 34 35 35 36 36 37 37
 
 Parsing method: LALR
 
@@ -101,14 +107,14 @@ state 0
     (4) stmt -> . showExp .
     (5) stmt -> . cmpExp .
     (6) stmt -> . loopExp .
-    (16) assignExp -> . IDENTIFIER ASSIGN exp
-    (17) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
-    (7) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
-    (18) showExp -> . SHOW CONSTANT
-    (19) showExp -> . SHOW IDENTIFIER
-    (20) showExp -> . SHOW STRING
-    (12) cmpExp -> . CMP cond { stmt }
-    (11) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (7) assignExp -> . IDENTIFIER ASSIGN exp
+    (8) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
+    (9) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
+    (21) showExp -> . SHOW CONSTANT
+    (22) showExp -> . SHOW IDENTIFIER
+    (23) showExp -> . SHOW STRING
+    (14) cmpExp -> . CMP cond { stmt }
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
 
     IDENTIFIER      shift and go to state 7
     t_CONSTANT      shift and go to state 8
@@ -134,14 +140,14 @@ state 1
     (4) stmt -> . showExp .
     (5) stmt -> . cmpExp .
     (6) stmt -> . loopExp .
-    (16) assignExp -> . IDENTIFIER ASSIGN exp
-    (17) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
-    (7) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
-    (18) showExp -> . SHOW CONSTANT
-    (19) showExp -> . SHOW IDENTIFIER
-    (20) showExp -> . SHOW STRING
-    (12) cmpExp -> . CMP cond { stmt }
-    (11) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (7) assignExp -> . IDENTIFIER ASSIGN exp
+    (8) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
+    (9) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
+    (21) showExp -> . SHOW CONSTANT
+    (22) showExp -> . SHOW IDENTIFIER
+    (23) showExp -> . SHOW STRING
+    (14) cmpExp -> . CMP cond { stmt }
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
 
     IDENTIFIER      shift and go to state 7
     t_CONSTANT      shift and go to state 8
@@ -194,30 +200,30 @@ state 6
 
 state 7
 
-    (16) assignExp -> IDENTIFIER . ASSIGN exp
+    (7) assignExp -> IDENTIFIER . ASSIGN exp
 
     ASSIGN          shift and go to state 19
 
 
 state 8
 
-    (17) assignExp -> t_CONSTANT . IDENTIFIER ASSIGN exp
+    (8) assignExp -> t_CONSTANT . IDENTIFIER ASSIGN exp
 
     IDENTIFIER      shift and go to state 20
 
 
 state 9
 
-    (7) arrayExp -> ARRAY . IDENTIFIER ASSIGN [ member ]
+    (9) arrayExp -> ARRAY . IDENTIFIER ASSIGN [ member ]
 
     IDENTIFIER      shift and go to state 21
 
 
 state 10
 
-    (18) showExp -> SHOW . CONSTANT
-    (19) showExp -> SHOW . IDENTIFIER
-    (20) showExp -> SHOW . STRING
+    (21) showExp -> SHOW . CONSTANT
+    (22) showExp -> SHOW . IDENTIFIER
+    (23) showExp -> SHOW . STRING
 
     CONSTANT        shift and go to state 22
     IDENTIFIER      shift and go to state 23
@@ -226,25 +232,29 @@ state 10
 
 state 11
 
-    (12) cmpExp -> CMP . cond { stmt }
-    (21) cond -> . exp < exp
-    (22) cond -> . exp > exp
-    (23) cond -> . exp NOTEQ exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (14) cmpExp -> CMP . cond { stmt }
+    (24) cond -> . exp < exp
+    (25) cond -> . exp > exp
+    (26) cond -> . exp = exp
+    (27) cond -> . exp NOTEQ exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
@@ -254,12 +264,13 @@ state 11
     cond                           shift and go to state 25
     exp                            shift and go to state 26
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
 state 12
 
-    (11) loopExp -> LOOP . IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP . IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
 
-    IDENTIFIER      shift and go to state 32
+    IDENTIFIER      shift and go to state 33
 
 
 state 13
@@ -272,14 +283,14 @@ state 13
     (4) stmt -> . showExp .
     (5) stmt -> . cmpExp .
     (6) stmt -> . loopExp .
-    (16) assignExp -> . IDENTIFIER ASSIGN exp
-    (17) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
-    (7) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
-    (18) showExp -> . SHOW CONSTANT
-    (19) showExp -> . SHOW IDENTIFIER
-    (20) showExp -> . SHOW STRING
-    (12) cmpExp -> . CMP cond { stmt }
-    (11) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (7) assignExp -> . IDENTIFIER ASSIGN exp
+    (8) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
+    (9) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
+    (21) showExp -> . SHOW CONSTANT
+    (22) showExp -> . SHOW IDENTIFIER
+    (23) showExp -> . SHOW STRING
+    (14) cmpExp -> . CMP cond { stmt }
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
 
   ! shift/reduce conflict for IDENTIFIER resolved as shift
   ! shift/reduce conflict for t_CONSTANT resolved as shift
@@ -388,257 +399,186 @@ state 18
 
 state 19
 
-    (16) assignExp -> IDENTIFIER ASSIGN . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (7) assignExp -> IDENTIFIER ASSIGN . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
     IDENTIFIER      shift and go to state 30
     CONSTANT        shift and go to state 31
 
-    exp                            shift and go to state 33
+    exp                            shift and go to state 34
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
 state 20
 
-    (17) assignExp -> t_CONSTANT IDENTIFIER . ASSIGN exp
-
-    ASSIGN          shift and go to state 34
-
-
-state 21
-
-    (7) arrayExp -> ARRAY IDENTIFIER . ASSIGN [ member ]
+    (8) assignExp -> t_CONSTANT IDENTIFIER . ASSIGN exp
 
     ASSIGN          shift and go to state 35
 
 
+state 21
+
+    (9) arrayExp -> ARRAY IDENTIFIER . ASSIGN [ member ]
+
+    ASSIGN          shift and go to state 36
+
+
 state 22
 
-    (18) showExp -> SHOW CONSTANT .
+    (21) showExp -> SHOW CONSTANT .
 
-    .               reduce using rule 18 (showExp -> SHOW CONSTANT .)
+    .               reduce using rule 21 (showExp -> SHOW CONSTANT .)
 
 
 state 23
 
-    (19) showExp -> SHOW IDENTIFIER .
+    (22) showExp -> SHOW IDENTIFIER .
 
-    .               reduce using rule 19 (showExp -> SHOW IDENTIFIER .)
+    .               reduce using rule 22 (showExp -> SHOW IDENTIFIER .)
 
 
 state 24
 
-    (20) showExp -> SHOW STRING .
+    (23) showExp -> SHOW STRING .
 
-    .               reduce using rule 20 (showExp -> SHOW STRING .)
+    .               reduce using rule 23 (showExp -> SHOW STRING .)
 
 
 state 25
 
-    (12) cmpExp -> CMP cond . { stmt }
+    (14) cmpExp -> CMP cond . { stmt }
 
-    {               shift and go to state 36
+    {               shift and go to state 37
 
 
 state 26
 
-    (21) cond -> exp . < exp
-    (22) cond -> exp . > exp
-    (23) cond -> exp . NOTEQ exp
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
+    (24) cond -> exp . < exp
+    (25) cond -> exp . > exp
+    (26) cond -> exp . = exp
+    (27) cond -> exp . NOTEQ exp
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
 
-    <               shift and go to state 37
-    >               shift and go to state 38
-    NOTEQ           shift and go to state 39
-    +               shift and go to state 40
-    -               shift and go to state 41
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
+    <               shift and go to state 38
+    >               shift and go to state 39
+    =               shift and go to state 40
+    NOTEQ           shift and go to state 41
+    +               shift and go to state 42
+    -               shift and go to state 43
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
 
 
 state 27
 
-    (15) exp -> val .
-    (29) exp -> val . + val
-    (30) exp -> val . - val
-    (31) exp -> val . / val
-    (32) exp -> val . * val
-    (33) exp -> val . % val
+    (20) exp -> val .
+    (33) exp -> val . + val
+    (34) exp -> val . - val
+    (35) exp -> val . / val
+    (36) exp -> val . * val
+    (37) exp -> val . % val
 
   ! shift/reduce conflict for + resolved as shift
   ! shift/reduce conflict for - resolved as shift
   ! shift/reduce conflict for / resolved as shift
   ! shift/reduce conflict for * resolved as shift
   ! shift/reduce conflict for % resolved as shift
-    <               reduce using rule 15 (exp -> val .)
-    >               reduce using rule 15 (exp -> val .)
-    NOTEQ           reduce using rule 15 (exp -> val .)
-    .               reduce using rule 15 (exp -> val .)
-    )               reduce using rule 15 (exp -> val .)
-    {               reduce using rule 15 (exp -> val .)
-    +               shift and go to state 45
-    -               shift and go to state 46
-    /               shift and go to state 47
-    *               shift and go to state 48
-    %               shift and go to state 49
+    <               reduce using rule 20 (exp -> val .)
+    >               reduce using rule 20 (exp -> val .)
+    =               reduce using rule 20 (exp -> val .)
+    NOTEQ           reduce using rule 20 (exp -> val .)
+    .               reduce using rule 20 (exp -> val .)
+    )               reduce using rule 20 (exp -> val .)
+    {               reduce using rule 20 (exp -> val .)
+    +               shift and go to state 47
+    -               shift and go to state 48
+    /               shift and go to state 49
+    *               shift and go to state 50
+    %               shift and go to state 51
 
-  ! +               [ reduce using rule 15 (exp -> val .) ]
-  ! -               [ reduce using rule 15 (exp -> val .) ]
-  ! /               [ reduce using rule 15 (exp -> val .) ]
-  ! *               [ reduce using rule 15 (exp -> val .) ]
-  ! %               [ reduce using rule 15 (exp -> val .) ]
+  ! +               [ reduce using rule 20 (exp -> val .) ]
+  ! -               [ reduce using rule 20 (exp -> val .) ]
+  ! /               [ reduce using rule 20 (exp -> val .) ]
+  ! *               [ reduce using rule 20 (exp -> val .) ]
+  ! %               [ reduce using rule 20 (exp -> val .) ]
 
 
 state 28
 
-    (34) exp -> - . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (38) exp -> - . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
     IDENTIFIER      shift and go to state 30
     CONSTANT        shift and go to state 31
 
-    exp                            shift and go to state 50
+    exp                            shift and go to state 52
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
 state 29
 
-    (35) exp -> ( . exp )
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
-
-    -               shift and go to state 28
-    (               shift and go to state 29
-    IDENTIFIER      shift and go to state 30
-    CONSTANT        shift and go to state 31
-
-    exp                            shift and go to state 51
-    val                            shift and go to state 27
-
-state 30
-
-    (13) val -> IDENTIFIER .
-
-    +               reduce using rule 13 (val -> IDENTIFIER .)
-    -               reduce using rule 13 (val -> IDENTIFIER .)
-    /               reduce using rule 13 (val -> IDENTIFIER .)
-    *               reduce using rule 13 (val -> IDENTIFIER .)
-    %               reduce using rule 13 (val -> IDENTIFIER .)
-    <               reduce using rule 13 (val -> IDENTIFIER .)
-    >               reduce using rule 13 (val -> IDENTIFIER .)
-    NOTEQ           reduce using rule 13 (val -> IDENTIFIER .)
-    .               reduce using rule 13 (val -> IDENTIFIER .)
-    )               reduce using rule 13 (val -> IDENTIFIER .)
-    {               reduce using rule 13 (val -> IDENTIFIER .)
-
-
-state 31
-
-    (14) val -> CONSTANT .
-
-    +               reduce using rule 14 (val -> CONSTANT .)
-    -               reduce using rule 14 (val -> CONSTANT .)
-    /               reduce using rule 14 (val -> CONSTANT .)
-    *               reduce using rule 14 (val -> CONSTANT .)
-    %               reduce using rule 14 (val -> CONSTANT .)
-    <               reduce using rule 14 (val -> CONSTANT .)
-    >               reduce using rule 14 (val -> CONSTANT .)
-    NOTEQ           reduce using rule 14 (val -> CONSTANT .)
-    .               reduce using rule 14 (val -> CONSTANT .)
-    )               reduce using rule 14 (val -> CONSTANT .)
-    {               reduce using rule 14 (val -> CONSTANT .)
-
-
-state 32
-
-    (11) loopExp -> LOOP IDENTIFIER . ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
-
-    ASSIGN          shift and go to state 52
-
-
-state 33
-
-    (16) assignExp -> IDENTIFIER ASSIGN exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
-
-    .               reduce using rule 16 (assignExp -> IDENTIFIER ASSIGN exp .)
-    +               shift and go to state 40
-    -               shift and go to state 41
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
-
-
-state 34
-
-    (17) assignExp -> t_CONSTANT IDENTIFIER ASSIGN . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (39) exp -> ( . exp )
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
@@ -647,64 +587,110 @@ state 34
 
     exp                            shift and go to state 53
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
-state 35
+state 30
 
-    (7) arrayExp -> ARRAY IDENTIFIER ASSIGN . [ member ]
+    (15) val -> IDENTIFIER .
+    (18) array_val -> IDENTIFIER . [ CONSTANT ]
+    (19) array_val -> IDENTIFIER . [ IDENTIFIER ]
 
+    +               reduce using rule 15 (val -> IDENTIFIER .)
+    -               reduce using rule 15 (val -> IDENTIFIER .)
+    /               reduce using rule 15 (val -> IDENTIFIER .)
+    *               reduce using rule 15 (val -> IDENTIFIER .)
+    %               reduce using rule 15 (val -> IDENTIFIER .)
+    <               reduce using rule 15 (val -> IDENTIFIER .)
+    >               reduce using rule 15 (val -> IDENTIFIER .)
+    =               reduce using rule 15 (val -> IDENTIFIER .)
+    NOTEQ           reduce using rule 15 (val -> IDENTIFIER .)
+    .               reduce using rule 15 (val -> IDENTIFIER .)
+    )               reduce using rule 15 (val -> IDENTIFIER .)
+    {               reduce using rule 15 (val -> IDENTIFIER .)
     [               shift and go to state 54
 
 
-state 36
+state 31
 
-    (12) cmpExp -> CMP cond { . stmt }
-    (1) stmt -> . stmt stmt
-    (2) stmt -> . assignExp .
-    (3) stmt -> . arrayExp .
-    (4) stmt -> . showExp .
-    (5) stmt -> . cmpExp .
-    (6) stmt -> . loopExp .
-    (16) assignExp -> . IDENTIFIER ASSIGN exp
-    (17) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
-    (7) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
-    (18) showExp -> . SHOW CONSTANT
-    (19) showExp -> . SHOW IDENTIFIER
-    (20) showExp -> . SHOW STRING
-    (12) cmpExp -> . CMP cond { stmt }
-    (11) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (16) val -> CONSTANT .
 
-    IDENTIFIER      shift and go to state 7
-    t_CONSTANT      shift and go to state 8
-    ARRAY           shift and go to state 9
-    SHOW            shift and go to state 10
-    CMP             shift and go to state 11
-    LOOP            shift and go to state 12
+    +               reduce using rule 16 (val -> CONSTANT .)
+    -               reduce using rule 16 (val -> CONSTANT .)
+    /               reduce using rule 16 (val -> CONSTANT .)
+    *               reduce using rule 16 (val -> CONSTANT .)
+    %               reduce using rule 16 (val -> CONSTANT .)
+    <               reduce using rule 16 (val -> CONSTANT .)
+    >               reduce using rule 16 (val -> CONSTANT .)
+    =               reduce using rule 16 (val -> CONSTANT .)
+    NOTEQ           reduce using rule 16 (val -> CONSTANT .)
+    .               reduce using rule 16 (val -> CONSTANT .)
+    )               reduce using rule 16 (val -> CONSTANT .)
+    {               reduce using rule 16 (val -> CONSTANT .)
 
-    stmt                           shift and go to state 55
-    assignExp                      shift and go to state 2
-    arrayExp                       shift and go to state 3
-    showExp                        shift and go to state 4
-    cmpExp                         shift and go to state 5
-    loopExp                        shift and go to state 6
 
-state 37
+state 32
 
-    (21) cond -> exp < . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (17) val -> array_val .
+
+    +               reduce using rule 17 (val -> array_val .)
+    -               reduce using rule 17 (val -> array_val .)
+    /               reduce using rule 17 (val -> array_val .)
+    *               reduce using rule 17 (val -> array_val .)
+    %               reduce using rule 17 (val -> array_val .)
+    <               reduce using rule 17 (val -> array_val .)
+    >               reduce using rule 17 (val -> array_val .)
+    =               reduce using rule 17 (val -> array_val .)
+    NOTEQ           reduce using rule 17 (val -> array_val .)
+    .               reduce using rule 17 (val -> array_val .)
+    )               reduce using rule 17 (val -> array_val .)
+    {               reduce using rule 17 (val -> array_val .)
+
+
+state 33
+
+    (13) loopExp -> LOOP IDENTIFIER . ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+
+    ASSIGN          shift and go to state 55
+
+
+state 34
+
+    (7) assignExp -> IDENTIFIER ASSIGN exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    .               reduce using rule 7 (assignExp -> IDENTIFIER ASSIGN exp .)
+    +               shift and go to state 42
+    -               shift and go to state 43
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
+
+
+state 35
+
+    (8) assignExp -> t_CONSTANT IDENTIFIER ASSIGN . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
@@ -713,79 +699,68 @@ state 37
 
     exp                            shift and go to state 56
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
+
+state 36
+
+    (9) arrayExp -> ARRAY IDENTIFIER ASSIGN . [ member ]
+
+    [               shift and go to state 57
+
+
+state 37
+
+    (14) cmpExp -> CMP cond { . stmt }
+    (1) stmt -> . stmt stmt
+    (2) stmt -> . assignExp .
+    (3) stmt -> . arrayExp .
+    (4) stmt -> . showExp .
+    (5) stmt -> . cmpExp .
+    (6) stmt -> . loopExp .
+    (7) assignExp -> . IDENTIFIER ASSIGN exp
+    (8) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
+    (9) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
+    (21) showExp -> . SHOW CONSTANT
+    (22) showExp -> . SHOW IDENTIFIER
+    (23) showExp -> . SHOW STRING
+    (14) cmpExp -> . CMP cond { stmt }
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+
+    IDENTIFIER      shift and go to state 7
+    t_CONSTANT      shift and go to state 8
+    ARRAY           shift and go to state 9
+    SHOW            shift and go to state 10
+    CMP             shift and go to state 11
+    LOOP            shift and go to state 12
+
+    stmt                           shift and go to state 58
+    assignExp                      shift and go to state 2
+    arrayExp                       shift and go to state 3
+    showExp                        shift and go to state 4
+    cmpExp                         shift and go to state 5
+    loopExp                        shift and go to state 6
 
 state 38
 
-    (22) cond -> exp > . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
-
-    -               shift and go to state 28
-    (               shift and go to state 29
-    IDENTIFIER      shift and go to state 30
-    CONSTANT        shift and go to state 31
-
-    exp                            shift and go to state 57
-    val                            shift and go to state 27
-
-state 39
-
-    (23) cond -> exp NOTEQ . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
-
-    -               shift and go to state 28
-    (               shift and go to state 29
-    IDENTIFIER      shift and go to state 30
-    CONSTANT        shift and go to state 31
-
-    exp                            shift and go to state 58
-    val                            shift and go to state 27
-
-state 40
-
-    (24) exp -> exp + . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (24) cond -> exp < . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
@@ -794,25 +769,29 @@ state 40
 
     exp                            shift and go to state 59
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
-state 41
+state 39
 
-    (25) exp -> exp - . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (25) cond -> exp > . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
@@ -821,25 +800,29 @@ state 41
 
     exp                            shift and go to state 60
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
-state 42
+state 40
 
-    (26) exp -> exp / . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (26) cond -> exp = . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
@@ -848,25 +831,29 @@ state 42
 
     exp                            shift and go to state 61
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
-state 43
+state 41
 
-    (27) exp -> exp * . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (27) cond -> exp NOTEQ . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
@@ -875,25 +862,29 @@ state 43
 
     exp                            shift and go to state 62
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
-state 44
+state 42
 
-    (28) exp -> exp % . exp
-    (15) exp -> . val
-    (24) exp -> . exp + exp
-    (25) exp -> . exp - exp
-    (26) exp -> . exp / exp
-    (27) exp -> . exp * exp
-    (28) exp -> . exp % exp
-    (29) exp -> . val + val
-    (30) exp -> . val - val
-    (31) exp -> . val / val
-    (32) exp -> . val * val
-    (33) exp -> . val % val
-    (34) exp -> . - exp
-    (35) exp -> . ( exp )
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (28) exp -> exp + . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     -               shift and go to state 28
     (               shift and go to state 29
@@ -902,637 +893,298 @@ state 44
 
     exp                            shift and go to state 63
     val                            shift and go to state 27
+    array_val                      shift and go to state 32
+
+state 43
+
+    (29) exp -> exp - . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
+
+    -               shift and go to state 28
+    (               shift and go to state 29
+    IDENTIFIER      shift and go to state 30
+    CONSTANT        shift and go to state 31
+
+    exp                            shift and go to state 64
+    val                            shift and go to state 27
+    array_val                      shift and go to state 32
+
+state 44
+
+    (30) exp -> exp / . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
+
+    -               shift and go to state 28
+    (               shift and go to state 29
+    IDENTIFIER      shift and go to state 30
+    CONSTANT        shift and go to state 31
+
+    exp                            shift and go to state 65
+    val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
 state 45
 
-    (29) exp -> val + . val
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (31) exp -> exp * . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
+    -               shift and go to state 28
+    (               shift and go to state 29
     IDENTIFIER      shift and go to state 30
     CONSTANT        shift and go to state 31
 
-    val                            shift and go to state 64
+    exp                            shift and go to state 66
+    val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
 state 46
 
-    (30) exp -> val - . val
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (32) exp -> exp % . exp
+    (20) exp -> . val
+    (28) exp -> . exp + exp
+    (29) exp -> . exp - exp
+    (30) exp -> . exp / exp
+    (31) exp -> . exp * exp
+    (32) exp -> . exp % exp
+    (33) exp -> . val + val
+    (34) exp -> . val - val
+    (35) exp -> . val / val
+    (36) exp -> . val * val
+    (37) exp -> . val % val
+    (38) exp -> . - exp
+    (39) exp -> . ( exp )
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
+    -               shift and go to state 28
+    (               shift and go to state 29
     IDENTIFIER      shift and go to state 30
     CONSTANT        shift and go to state 31
 
-    val                            shift and go to state 65
+    exp                            shift and go to state 67
+    val                            shift and go to state 27
+    array_val                      shift and go to state 32
 
 state 47
 
-    (31) exp -> val / . val
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
-
-    IDENTIFIER      shift and go to state 30
-    CONSTANT        shift and go to state 31
-
-    val                            shift and go to state 66
-
-state 48
-
-    (32) exp -> val * . val
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
-
-    IDENTIFIER      shift and go to state 30
-    CONSTANT        shift and go to state 31
-
-    val                            shift and go to state 67
-
-state 49
-
-    (33) exp -> val % . val
-    (13) val -> . IDENTIFIER
-    (14) val -> . CONSTANT
+    (33) exp -> val + . val
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
     IDENTIFIER      shift and go to state 30
     CONSTANT        shift and go to state 31
 
     val                            shift and go to state 68
+    array_val                      shift and go to state 32
+
+state 48
+
+    (34) exp -> val - . val
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
+
+    IDENTIFIER      shift and go to state 30
+    CONSTANT        shift and go to state 31
+
+    val                            shift and go to state 69
+    array_val                      shift and go to state 32
+
+state 49
+
+    (35) exp -> val / . val
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
+
+    IDENTIFIER      shift and go to state 30
+    CONSTANT        shift and go to state 31
+
+    val                            shift and go to state 70
+    array_val                      shift and go to state 32
 
 state 50
 
-    (34) exp -> - exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
+    (36) exp -> val * . val
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
-    <               reduce using rule 34 (exp -> - exp .)
-    >               reduce using rule 34 (exp -> - exp .)
-    NOTEQ           reduce using rule 34 (exp -> - exp .)
-    +               reduce using rule 34 (exp -> - exp .)
-    -               reduce using rule 34 (exp -> - exp .)
-    .               reduce using rule 34 (exp -> - exp .)
-    )               reduce using rule 34 (exp -> - exp .)
-    {               reduce using rule 34 (exp -> - exp .)
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
+    IDENTIFIER      shift and go to state 30
+    CONSTANT        shift and go to state 31
 
-  ! /               [ reduce using rule 34 (exp -> - exp .) ]
-  ! *               [ reduce using rule 34 (exp -> - exp .) ]
-  ! %               [ reduce using rule 34 (exp -> - exp .) ]
-  ! +               [ shift and go to state 40 ]
-  ! -               [ shift and go to state 41 ]
-
+    val                            shift and go to state 71
+    array_val                      shift and go to state 32
 
 state 51
 
-    (35) exp -> ( exp . )
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
+    (37) exp -> val % . val
+    (15) val -> . IDENTIFIER
+    (16) val -> . CONSTANT
+    (17) val -> . array_val
+    (18) array_val -> . IDENTIFIER [ CONSTANT ]
+    (19) array_val -> . IDENTIFIER [ IDENTIFIER ]
 
-    )               shift and go to state 69
-    +               shift and go to state 40
-    -               shift and go to state 41
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
+    IDENTIFIER      shift and go to state 30
+    CONSTANT        shift and go to state 31
 
+    val                            shift and go to state 72
+    array_val                      shift and go to state 32
 
 state 52
 
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN . { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (38) exp -> - exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
 
-    {               shift and go to state 70
+    <               reduce using rule 38 (exp -> - exp .)
+    >               reduce using rule 38 (exp -> - exp .)
+    =               reduce using rule 38 (exp -> - exp .)
+    NOTEQ           reduce using rule 38 (exp -> - exp .)
+    +               reduce using rule 38 (exp -> - exp .)
+    -               reduce using rule 38 (exp -> - exp .)
+    .               reduce using rule 38 (exp -> - exp .)
+    )               reduce using rule 38 (exp -> - exp .)
+    {               reduce using rule 38 (exp -> - exp .)
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
+
+  ! /               [ reduce using rule 38 (exp -> - exp .) ]
+  ! *               [ reduce using rule 38 (exp -> - exp .) ]
+  ! %               [ reduce using rule 38 (exp -> - exp .) ]
+  ! +               [ shift and go to state 42 ]
+  ! -               [ shift and go to state 43 ]
 
 
 state 53
 
-    (17) assignExp -> t_CONSTANT IDENTIFIER ASSIGN exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
+    (39) exp -> ( exp . )
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
 
-    .               reduce using rule 17 (assignExp -> t_CONSTANT IDENTIFIER ASSIGN exp .)
-    +               shift and go to state 40
-    -               shift and go to state 41
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
+    )               shift and go to state 73
+    +               shift and go to state 42
+    -               shift and go to state 43
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
 
 
 state 54
 
-    (7) arrayExp -> ARRAY IDENTIFIER ASSIGN [ . member ]
-    (8) member -> . CONSTANT member2
+    (18) array_val -> IDENTIFIER [ . CONSTANT ]
+    (19) array_val -> IDENTIFIER [ . IDENTIFIER ]
 
-    CONSTANT        shift and go to state 72
+    CONSTANT        shift and go to state 75
+    IDENTIFIER      shift and go to state 74
 
-    member                         shift and go to state 71
 
 state 55
 
-    (12) cmpExp -> CMP cond { stmt . }
-    (1) stmt -> stmt . stmt
-    (1) stmt -> . stmt stmt
-    (2) stmt -> . assignExp .
-    (3) stmt -> . arrayExp .
-    (4) stmt -> . showExp .
-    (5) stmt -> . cmpExp .
-    (6) stmt -> . loopExp .
-    (16) assignExp -> . IDENTIFIER ASSIGN exp
-    (17) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
-    (7) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
-    (18) showExp -> . SHOW CONSTANT
-    (19) showExp -> . SHOW IDENTIFIER
-    (20) showExp -> . SHOW STRING
-    (12) cmpExp -> . CMP cond { stmt }
-    (11) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN . { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
 
-    }               shift and go to state 73
-    IDENTIFIER      shift and go to state 7
-    t_CONSTANT      shift and go to state 8
-    ARRAY           shift and go to state 9
-    SHOW            shift and go to state 10
-    CMP             shift and go to state 11
-    LOOP            shift and go to state 12
+    {               shift and go to state 76
 
-    stmt                           shift and go to state 13
-    assignExp                      shift and go to state 2
-    arrayExp                       shift and go to state 3
-    showExp                        shift and go to state 4
-    cmpExp                         shift and go to state 5
-    loopExp                        shift and go to state 6
 
 state 56
 
-    (21) cond -> exp < exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
+    (8) assignExp -> t_CONSTANT IDENTIFIER ASSIGN exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
 
-    {               reduce using rule 21 (cond -> exp < exp .)
-    +               shift and go to state 40
-    -               shift and go to state 41
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
+    .               reduce using rule 8 (assignExp -> t_CONSTANT IDENTIFIER ASSIGN exp .)
+    +               shift and go to state 42
+    -               shift and go to state 43
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
 
 
 state 57
 
-    (22) cond -> exp > exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
+    (9) arrayExp -> ARRAY IDENTIFIER ASSIGN [ . member ]
+    (10) member -> . CONSTANT member2
 
-    {               reduce using rule 22 (cond -> exp > exp .)
-    +               shift and go to state 40
-    -               shift and go to state 41
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
+    CONSTANT        shift and go to state 78
 
+    member                         shift and go to state 77
 
 state 58
 
-    (23) cond -> exp NOTEQ exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
-
-    {               reduce using rule 23 (cond -> exp NOTEQ exp .)
-    +               shift and go to state 40
-    -               shift and go to state 41
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
-
-
-state 59
-
-    (24) exp -> exp + exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
-
-    <               reduce using rule 24 (exp -> exp + exp .)
-    >               reduce using rule 24 (exp -> exp + exp .)
-    NOTEQ           reduce using rule 24 (exp -> exp + exp .)
-    +               reduce using rule 24 (exp -> exp + exp .)
-    -               reduce using rule 24 (exp -> exp + exp .)
-    .               reduce using rule 24 (exp -> exp + exp .)
-    )               reduce using rule 24 (exp -> exp + exp .)
-    {               reduce using rule 24 (exp -> exp + exp .)
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
-
-  ! /               [ reduce using rule 24 (exp -> exp + exp .) ]
-  ! *               [ reduce using rule 24 (exp -> exp + exp .) ]
-  ! %               [ reduce using rule 24 (exp -> exp + exp .) ]
-  ! +               [ shift and go to state 40 ]
-  ! -               [ shift and go to state 41 ]
-
-
-state 60
-
-    (25) exp -> exp - exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
-
-    <               reduce using rule 25 (exp -> exp - exp .)
-    >               reduce using rule 25 (exp -> exp - exp .)
-    NOTEQ           reduce using rule 25 (exp -> exp - exp .)
-    +               reduce using rule 25 (exp -> exp - exp .)
-    -               reduce using rule 25 (exp -> exp - exp .)
-    .               reduce using rule 25 (exp -> exp - exp .)
-    )               reduce using rule 25 (exp -> exp - exp .)
-    {               reduce using rule 25 (exp -> exp - exp .)
-    /               shift and go to state 42
-    *               shift and go to state 43
-    %               shift and go to state 44
-
-  ! /               [ reduce using rule 25 (exp -> exp - exp .) ]
-  ! *               [ reduce using rule 25 (exp -> exp - exp .) ]
-  ! %               [ reduce using rule 25 (exp -> exp - exp .) ]
-  ! +               [ shift and go to state 40 ]
-  ! -               [ shift and go to state 41 ]
-
-
-state 61
-
-    (26) exp -> exp / exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
-
-    <               reduce using rule 26 (exp -> exp / exp .)
-    >               reduce using rule 26 (exp -> exp / exp .)
-    NOTEQ           reduce using rule 26 (exp -> exp / exp .)
-    +               reduce using rule 26 (exp -> exp / exp .)
-    -               reduce using rule 26 (exp -> exp / exp .)
-    /               reduce using rule 26 (exp -> exp / exp .)
-    *               reduce using rule 26 (exp -> exp / exp .)
-    %               reduce using rule 26 (exp -> exp / exp .)
-    .               reduce using rule 26 (exp -> exp / exp .)
-    )               reduce using rule 26 (exp -> exp / exp .)
-    {               reduce using rule 26 (exp -> exp / exp .)
-
-  ! +               [ shift and go to state 40 ]
-  ! -               [ shift and go to state 41 ]
-  ! /               [ shift and go to state 42 ]
-  ! *               [ shift and go to state 43 ]
-  ! %               [ shift and go to state 44 ]
-
-
-state 62
-
-    (27) exp -> exp * exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
-
-    <               reduce using rule 27 (exp -> exp * exp .)
-    >               reduce using rule 27 (exp -> exp * exp .)
-    NOTEQ           reduce using rule 27 (exp -> exp * exp .)
-    +               reduce using rule 27 (exp -> exp * exp .)
-    -               reduce using rule 27 (exp -> exp * exp .)
-    /               reduce using rule 27 (exp -> exp * exp .)
-    *               reduce using rule 27 (exp -> exp * exp .)
-    %               reduce using rule 27 (exp -> exp * exp .)
-    .               reduce using rule 27 (exp -> exp * exp .)
-    )               reduce using rule 27 (exp -> exp * exp .)
-    {               reduce using rule 27 (exp -> exp * exp .)
-
-  ! +               [ shift and go to state 40 ]
-  ! -               [ shift and go to state 41 ]
-  ! /               [ shift and go to state 42 ]
-  ! *               [ shift and go to state 43 ]
-  ! %               [ shift and go to state 44 ]
-
-
-state 63
-
-    (28) exp -> exp % exp .
-    (24) exp -> exp . + exp
-    (25) exp -> exp . - exp
-    (26) exp -> exp . / exp
-    (27) exp -> exp . * exp
-    (28) exp -> exp . % exp
-
-    <               reduce using rule 28 (exp -> exp % exp .)
-    >               reduce using rule 28 (exp -> exp % exp .)
-    NOTEQ           reduce using rule 28 (exp -> exp % exp .)
-    +               reduce using rule 28 (exp -> exp % exp .)
-    -               reduce using rule 28 (exp -> exp % exp .)
-    /               reduce using rule 28 (exp -> exp % exp .)
-    *               reduce using rule 28 (exp -> exp % exp .)
-    %               reduce using rule 28 (exp -> exp % exp .)
-    .               reduce using rule 28 (exp -> exp % exp .)
-    )               reduce using rule 28 (exp -> exp % exp .)
-    {               reduce using rule 28 (exp -> exp % exp .)
-
-  ! +               [ shift and go to state 40 ]
-  ! -               [ shift and go to state 41 ]
-  ! /               [ shift and go to state 42 ]
-  ! *               [ shift and go to state 43 ]
-  ! %               [ shift and go to state 44 ]
-
-
-state 64
-
-    (29) exp -> val + val .
-
-    <               reduce using rule 29 (exp -> val + val .)
-    >               reduce using rule 29 (exp -> val + val .)
-    NOTEQ           reduce using rule 29 (exp -> val + val .)
-    +               reduce using rule 29 (exp -> val + val .)
-    -               reduce using rule 29 (exp -> val + val .)
-    /               reduce using rule 29 (exp -> val + val .)
-    *               reduce using rule 29 (exp -> val + val .)
-    %               reduce using rule 29 (exp -> val + val .)
-    .               reduce using rule 29 (exp -> val + val .)
-    )               reduce using rule 29 (exp -> val + val .)
-    {               reduce using rule 29 (exp -> val + val .)
-
-
-state 65
-
-    (30) exp -> val - val .
-
-    <               reduce using rule 30 (exp -> val - val .)
-    >               reduce using rule 30 (exp -> val - val .)
-    NOTEQ           reduce using rule 30 (exp -> val - val .)
-    +               reduce using rule 30 (exp -> val - val .)
-    -               reduce using rule 30 (exp -> val - val .)
-    /               reduce using rule 30 (exp -> val - val .)
-    *               reduce using rule 30 (exp -> val - val .)
-    %               reduce using rule 30 (exp -> val - val .)
-    .               reduce using rule 30 (exp -> val - val .)
-    )               reduce using rule 30 (exp -> val - val .)
-    {               reduce using rule 30 (exp -> val - val .)
-
-
-state 66
-
-    (31) exp -> val / val .
-
-    <               reduce using rule 31 (exp -> val / val .)
-    >               reduce using rule 31 (exp -> val / val .)
-    NOTEQ           reduce using rule 31 (exp -> val / val .)
-    +               reduce using rule 31 (exp -> val / val .)
-    -               reduce using rule 31 (exp -> val / val .)
-    /               reduce using rule 31 (exp -> val / val .)
-    *               reduce using rule 31 (exp -> val / val .)
-    %               reduce using rule 31 (exp -> val / val .)
-    .               reduce using rule 31 (exp -> val / val .)
-    )               reduce using rule 31 (exp -> val / val .)
-    {               reduce using rule 31 (exp -> val / val .)
-
-
-state 67
-
-    (32) exp -> val * val .
-
-    <               reduce using rule 32 (exp -> val * val .)
-    >               reduce using rule 32 (exp -> val * val .)
-    NOTEQ           reduce using rule 32 (exp -> val * val .)
-    +               reduce using rule 32 (exp -> val * val .)
-    -               reduce using rule 32 (exp -> val * val .)
-    /               reduce using rule 32 (exp -> val * val .)
-    *               reduce using rule 32 (exp -> val * val .)
-    %               reduce using rule 32 (exp -> val * val .)
-    .               reduce using rule 32 (exp -> val * val .)
-    )               reduce using rule 32 (exp -> val * val .)
-    {               reduce using rule 32 (exp -> val * val .)
-
-
-state 68
-
-    (33) exp -> val % val .
-
-    <               reduce using rule 33 (exp -> val % val .)
-    >               reduce using rule 33 (exp -> val % val .)
-    NOTEQ           reduce using rule 33 (exp -> val % val .)
-    +               reduce using rule 33 (exp -> val % val .)
-    -               reduce using rule 33 (exp -> val % val .)
-    /               reduce using rule 33 (exp -> val % val .)
-    *               reduce using rule 33 (exp -> val % val .)
-    %               reduce using rule 33 (exp -> val % val .)
-    .               reduce using rule 33 (exp -> val % val .)
-    )               reduce using rule 33 (exp -> val % val .)
-    {               reduce using rule 33 (exp -> val % val .)
-
-
-state 69
-
-    (35) exp -> ( exp ) .
-
-    <               reduce using rule 35 (exp -> ( exp ) .)
-    >               reduce using rule 35 (exp -> ( exp ) .)
-    NOTEQ           reduce using rule 35 (exp -> ( exp ) .)
-    +               reduce using rule 35 (exp -> ( exp ) .)
-    -               reduce using rule 35 (exp -> ( exp ) .)
-    /               reduce using rule 35 (exp -> ( exp ) .)
-    *               reduce using rule 35 (exp -> ( exp ) .)
-    %               reduce using rule 35 (exp -> ( exp ) .)
-    .               reduce using rule 35 (exp -> ( exp ) .)
-    )               reduce using rule 35 (exp -> ( exp ) .)
-    {               reduce using rule 35 (exp -> ( exp ) .)
-
-
-state 70
-
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { . CONSTANT , CONSTANT , CONSTANT } stmt FINISH
-
-    CONSTANT        shift and go to state 74
-
-
-state 71
-
-    (7) arrayExp -> ARRAY IDENTIFIER ASSIGN [ member . ]
-
-    ]               shift and go to state 75
-
-
-state 72
-
-    (8) member -> CONSTANT . member2
-    (9) member2 -> . , CONSTANT member2
-    (10) member2 -> . empty empty empty
-    (36) empty -> .
-
-    ,               shift and go to state 77
-    ]               reduce using rule 36 (empty -> .)
-
-    member2                        shift and go to state 76
-    empty                          shift and go to state 78
-
-state 73
-
-    (12) cmpExp -> CMP cond { stmt } .
-
-    .               reduce using rule 12 (cmpExp -> CMP cond { stmt } .)
-
-
-state 74
-
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT . , CONSTANT , CONSTANT } stmt FINISH
-
-    ,               shift and go to state 79
-
-
-state 75
-
-    (7) arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ] .
-
-    .               reduce using rule 7 (arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ] .)
-
-
-state 76
-
-    (8) member -> CONSTANT member2 .
-
-    ]               reduce using rule 8 (member -> CONSTANT member2 .)
-
-
-state 77
-
-    (9) member2 -> , . CONSTANT member2
-
-    CONSTANT        shift and go to state 80
-
-
-state 78
-
-    (10) member2 -> empty . empty empty
-    (36) empty -> .
-
-    ]               reduce using rule 36 (empty -> .)
-
-    empty                          shift and go to state 81
-
-state 79
-
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , . CONSTANT , CONSTANT } stmt FINISH
-
-    CONSTANT        shift and go to state 82
-
-
-state 80
-
-    (9) member2 -> , CONSTANT . member2
-    (9) member2 -> . , CONSTANT member2
-    (10) member2 -> . empty empty empty
-    (36) empty -> .
-
-    ,               shift and go to state 77
-    ]               reduce using rule 36 (empty -> .)
-
-    member2                        shift and go to state 83
-    empty                          shift and go to state 78
-
-state 81
-
-    (10) member2 -> empty empty . empty
-    (36) empty -> .
-
-    ]               reduce using rule 36 (empty -> .)
-
-    empty                          shift and go to state 84
-
-state 82
-
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT . , CONSTANT } stmt FINISH
-
-    ,               shift and go to state 85
-
-
-state 83
-
-    (9) member2 -> , CONSTANT member2 .
-
-    ]               reduce using rule 9 (member2 -> , CONSTANT member2 .)
-
-
-state 84
-
-    (10) member2 -> empty empty empty .
-
-    ]               reduce using rule 10 (member2 -> empty empty empty .)
-
-
-state 85
-
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , . CONSTANT } stmt FINISH
-
-    CONSTANT        shift and go to state 86
-
-
-state 86
-
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT . } stmt FINISH
-
-    }               shift and go to state 87
-
-
-state 87
-
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } . stmt FINISH
-    (1) stmt -> . stmt stmt
-    (2) stmt -> . assignExp .
-    (3) stmt -> . arrayExp .
-    (4) stmt -> . showExp .
-    (5) stmt -> . cmpExp .
-    (6) stmt -> . loopExp .
-    (16) assignExp -> . IDENTIFIER ASSIGN exp
-    (17) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
-    (7) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
-    (18) showExp -> . SHOW CONSTANT
-    (19) showExp -> . SHOW IDENTIFIER
-    (20) showExp -> . SHOW STRING
-    (12) cmpExp -> . CMP cond { stmt }
-    (11) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
-
-    IDENTIFIER      shift and go to state 7
-    t_CONSTANT      shift and go to state 8
-    ARRAY           shift and go to state 9
-    SHOW            shift and go to state 10
-    CMP             shift and go to state 11
-    LOOP            shift and go to state 12
-
-    stmt                           shift and go to state 88
-    assignExp                      shift and go to state 2
-    arrayExp                       shift and go to state 3
-    showExp                        shift and go to state 4
-    cmpExp                         shift and go to state 5
-    loopExp                        shift and go to state 6
-
-state 88
-
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt . FINISH
+    (14) cmpExp -> CMP cond { stmt . }
     (1) stmt -> stmt . stmt
     (1) stmt -> . stmt stmt
     (2) stmt -> . assignExp .
@@ -1540,16 +1192,16 @@ state 88
     (4) stmt -> . showExp .
     (5) stmt -> . cmpExp .
     (6) stmt -> . loopExp .
-    (16) assignExp -> . IDENTIFIER ASSIGN exp
-    (17) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
-    (7) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
-    (18) showExp -> . SHOW CONSTANT
-    (19) showExp -> . SHOW IDENTIFIER
-    (20) showExp -> . SHOW STRING
-    (12) cmpExp -> . CMP cond { stmt }
-    (11) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (7) assignExp -> . IDENTIFIER ASSIGN exp
+    (8) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
+    (9) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
+    (21) showExp -> . SHOW CONSTANT
+    (22) showExp -> . SHOW IDENTIFIER
+    (23) showExp -> . SHOW STRING
+    (14) cmpExp -> . CMP cond { stmt }
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
 
-    FINISH          shift and go to state 89
+    }               shift and go to state 79
     IDENTIFIER      shift and go to state 7
     t_CONSTANT      shift and go to state 8
     ARRAY           shift and go to state 9
@@ -1564,11 +1216,583 @@ state 88
     cmpExp                         shift and go to state 5
     loopExp                        shift and go to state 6
 
+state 59
+
+    (24) cond -> exp < exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    {               reduce using rule 24 (cond -> exp < exp .)
+    +               shift and go to state 42
+    -               shift and go to state 43
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
+
+
+state 60
+
+    (25) cond -> exp > exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    {               reduce using rule 25 (cond -> exp > exp .)
+    +               shift and go to state 42
+    -               shift and go to state 43
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
+
+
+state 61
+
+    (26) cond -> exp = exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    {               reduce using rule 26 (cond -> exp = exp .)
+    +               shift and go to state 42
+    -               shift and go to state 43
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
+
+
+state 62
+
+    (27) cond -> exp NOTEQ exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    {               reduce using rule 27 (cond -> exp NOTEQ exp .)
+    +               shift and go to state 42
+    -               shift and go to state 43
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
+
+
+state 63
+
+    (28) exp -> exp + exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    <               reduce using rule 28 (exp -> exp + exp .)
+    >               reduce using rule 28 (exp -> exp + exp .)
+    =               reduce using rule 28 (exp -> exp + exp .)
+    NOTEQ           reduce using rule 28 (exp -> exp + exp .)
+    +               reduce using rule 28 (exp -> exp + exp .)
+    -               reduce using rule 28 (exp -> exp + exp .)
+    .               reduce using rule 28 (exp -> exp + exp .)
+    )               reduce using rule 28 (exp -> exp + exp .)
+    {               reduce using rule 28 (exp -> exp + exp .)
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
+
+  ! /               [ reduce using rule 28 (exp -> exp + exp .) ]
+  ! *               [ reduce using rule 28 (exp -> exp + exp .) ]
+  ! %               [ reduce using rule 28 (exp -> exp + exp .) ]
+  ! +               [ shift and go to state 42 ]
+  ! -               [ shift and go to state 43 ]
+
+
+state 64
+
+    (29) exp -> exp - exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    <               reduce using rule 29 (exp -> exp - exp .)
+    >               reduce using rule 29 (exp -> exp - exp .)
+    =               reduce using rule 29 (exp -> exp - exp .)
+    NOTEQ           reduce using rule 29 (exp -> exp - exp .)
+    +               reduce using rule 29 (exp -> exp - exp .)
+    -               reduce using rule 29 (exp -> exp - exp .)
+    .               reduce using rule 29 (exp -> exp - exp .)
+    )               reduce using rule 29 (exp -> exp - exp .)
+    {               reduce using rule 29 (exp -> exp - exp .)
+    /               shift and go to state 44
+    *               shift and go to state 45
+    %               shift and go to state 46
+
+  ! /               [ reduce using rule 29 (exp -> exp - exp .) ]
+  ! *               [ reduce using rule 29 (exp -> exp - exp .) ]
+  ! %               [ reduce using rule 29 (exp -> exp - exp .) ]
+  ! +               [ shift and go to state 42 ]
+  ! -               [ shift and go to state 43 ]
+
+
+state 65
+
+    (30) exp -> exp / exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    <               reduce using rule 30 (exp -> exp / exp .)
+    >               reduce using rule 30 (exp -> exp / exp .)
+    =               reduce using rule 30 (exp -> exp / exp .)
+    NOTEQ           reduce using rule 30 (exp -> exp / exp .)
+    +               reduce using rule 30 (exp -> exp / exp .)
+    -               reduce using rule 30 (exp -> exp / exp .)
+    /               reduce using rule 30 (exp -> exp / exp .)
+    *               reduce using rule 30 (exp -> exp / exp .)
+    %               reduce using rule 30 (exp -> exp / exp .)
+    .               reduce using rule 30 (exp -> exp / exp .)
+    )               reduce using rule 30 (exp -> exp / exp .)
+    {               reduce using rule 30 (exp -> exp / exp .)
+
+  ! +               [ shift and go to state 42 ]
+  ! -               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! *               [ shift and go to state 45 ]
+  ! %               [ shift and go to state 46 ]
+
+
+state 66
+
+    (31) exp -> exp * exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    <               reduce using rule 31 (exp -> exp * exp .)
+    >               reduce using rule 31 (exp -> exp * exp .)
+    =               reduce using rule 31 (exp -> exp * exp .)
+    NOTEQ           reduce using rule 31 (exp -> exp * exp .)
+    +               reduce using rule 31 (exp -> exp * exp .)
+    -               reduce using rule 31 (exp -> exp * exp .)
+    /               reduce using rule 31 (exp -> exp * exp .)
+    *               reduce using rule 31 (exp -> exp * exp .)
+    %               reduce using rule 31 (exp -> exp * exp .)
+    .               reduce using rule 31 (exp -> exp * exp .)
+    )               reduce using rule 31 (exp -> exp * exp .)
+    {               reduce using rule 31 (exp -> exp * exp .)
+
+  ! +               [ shift and go to state 42 ]
+  ! -               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! *               [ shift and go to state 45 ]
+  ! %               [ shift and go to state 46 ]
+
+
+state 67
+
+    (32) exp -> exp % exp .
+    (28) exp -> exp . + exp
+    (29) exp -> exp . - exp
+    (30) exp -> exp . / exp
+    (31) exp -> exp . * exp
+    (32) exp -> exp . % exp
+
+    <               reduce using rule 32 (exp -> exp % exp .)
+    >               reduce using rule 32 (exp -> exp % exp .)
+    =               reduce using rule 32 (exp -> exp % exp .)
+    NOTEQ           reduce using rule 32 (exp -> exp % exp .)
+    +               reduce using rule 32 (exp -> exp % exp .)
+    -               reduce using rule 32 (exp -> exp % exp .)
+    /               reduce using rule 32 (exp -> exp % exp .)
+    *               reduce using rule 32 (exp -> exp % exp .)
+    %               reduce using rule 32 (exp -> exp % exp .)
+    .               reduce using rule 32 (exp -> exp % exp .)
+    )               reduce using rule 32 (exp -> exp % exp .)
+    {               reduce using rule 32 (exp -> exp % exp .)
+
+  ! +               [ shift and go to state 42 ]
+  ! -               [ shift and go to state 43 ]
+  ! /               [ shift and go to state 44 ]
+  ! *               [ shift and go to state 45 ]
+  ! %               [ shift and go to state 46 ]
+
+
+state 68
+
+    (33) exp -> val + val .
+
+    <               reduce using rule 33 (exp -> val + val .)
+    >               reduce using rule 33 (exp -> val + val .)
+    =               reduce using rule 33 (exp -> val + val .)
+    NOTEQ           reduce using rule 33 (exp -> val + val .)
+    +               reduce using rule 33 (exp -> val + val .)
+    -               reduce using rule 33 (exp -> val + val .)
+    /               reduce using rule 33 (exp -> val + val .)
+    *               reduce using rule 33 (exp -> val + val .)
+    %               reduce using rule 33 (exp -> val + val .)
+    .               reduce using rule 33 (exp -> val + val .)
+    )               reduce using rule 33 (exp -> val + val .)
+    {               reduce using rule 33 (exp -> val + val .)
+
+
+state 69
+
+    (34) exp -> val - val .
+
+    <               reduce using rule 34 (exp -> val - val .)
+    >               reduce using rule 34 (exp -> val - val .)
+    =               reduce using rule 34 (exp -> val - val .)
+    NOTEQ           reduce using rule 34 (exp -> val - val .)
+    +               reduce using rule 34 (exp -> val - val .)
+    -               reduce using rule 34 (exp -> val - val .)
+    /               reduce using rule 34 (exp -> val - val .)
+    *               reduce using rule 34 (exp -> val - val .)
+    %               reduce using rule 34 (exp -> val - val .)
+    .               reduce using rule 34 (exp -> val - val .)
+    )               reduce using rule 34 (exp -> val - val .)
+    {               reduce using rule 34 (exp -> val - val .)
+
+
+state 70
+
+    (35) exp -> val / val .
+
+    <               reduce using rule 35 (exp -> val / val .)
+    >               reduce using rule 35 (exp -> val / val .)
+    =               reduce using rule 35 (exp -> val / val .)
+    NOTEQ           reduce using rule 35 (exp -> val / val .)
+    +               reduce using rule 35 (exp -> val / val .)
+    -               reduce using rule 35 (exp -> val / val .)
+    /               reduce using rule 35 (exp -> val / val .)
+    *               reduce using rule 35 (exp -> val / val .)
+    %               reduce using rule 35 (exp -> val / val .)
+    .               reduce using rule 35 (exp -> val / val .)
+    )               reduce using rule 35 (exp -> val / val .)
+    {               reduce using rule 35 (exp -> val / val .)
+
+
+state 71
+
+    (36) exp -> val * val .
+
+    <               reduce using rule 36 (exp -> val * val .)
+    >               reduce using rule 36 (exp -> val * val .)
+    =               reduce using rule 36 (exp -> val * val .)
+    NOTEQ           reduce using rule 36 (exp -> val * val .)
+    +               reduce using rule 36 (exp -> val * val .)
+    -               reduce using rule 36 (exp -> val * val .)
+    /               reduce using rule 36 (exp -> val * val .)
+    *               reduce using rule 36 (exp -> val * val .)
+    %               reduce using rule 36 (exp -> val * val .)
+    .               reduce using rule 36 (exp -> val * val .)
+    )               reduce using rule 36 (exp -> val * val .)
+    {               reduce using rule 36 (exp -> val * val .)
+
+
+state 72
+
+    (37) exp -> val % val .
+
+    <               reduce using rule 37 (exp -> val % val .)
+    >               reduce using rule 37 (exp -> val % val .)
+    =               reduce using rule 37 (exp -> val % val .)
+    NOTEQ           reduce using rule 37 (exp -> val % val .)
+    +               reduce using rule 37 (exp -> val % val .)
+    -               reduce using rule 37 (exp -> val % val .)
+    /               reduce using rule 37 (exp -> val % val .)
+    *               reduce using rule 37 (exp -> val % val .)
+    %               reduce using rule 37 (exp -> val % val .)
+    .               reduce using rule 37 (exp -> val % val .)
+    )               reduce using rule 37 (exp -> val % val .)
+    {               reduce using rule 37 (exp -> val % val .)
+
+
+state 73
+
+    (39) exp -> ( exp ) .
+
+    <               reduce using rule 39 (exp -> ( exp ) .)
+    >               reduce using rule 39 (exp -> ( exp ) .)
+    =               reduce using rule 39 (exp -> ( exp ) .)
+    NOTEQ           reduce using rule 39 (exp -> ( exp ) .)
+    +               reduce using rule 39 (exp -> ( exp ) .)
+    -               reduce using rule 39 (exp -> ( exp ) .)
+    /               reduce using rule 39 (exp -> ( exp ) .)
+    *               reduce using rule 39 (exp -> ( exp ) .)
+    %               reduce using rule 39 (exp -> ( exp ) .)
+    .               reduce using rule 39 (exp -> ( exp ) .)
+    )               reduce using rule 39 (exp -> ( exp ) .)
+    {               reduce using rule 39 (exp -> ( exp ) .)
+
+
+state 74
+
+    (19) array_val -> IDENTIFIER [ IDENTIFIER . ]
+
+    ]               shift and go to state 80
+
+
+state 75
+
+    (18) array_val -> IDENTIFIER [ CONSTANT . ]
+
+    ]               shift and go to state 81
+
+
+state 76
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { . CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+
+    CONSTANT        shift and go to state 82
+
+
+state 77
+
+    (9) arrayExp -> ARRAY IDENTIFIER ASSIGN [ member . ]
+
+    ]               shift and go to state 83
+
+
+state 78
+
+    (10) member -> CONSTANT . member2
+    (11) member2 -> . , CONSTANT member2
+    (12) member2 -> . empty empty empty
+    (40) empty -> .
+
+    ,               shift and go to state 85
+    ]               reduce using rule 40 (empty -> .)
+
+    member2                        shift and go to state 84
+    empty                          shift and go to state 86
+
+state 79
+
+    (14) cmpExp -> CMP cond { stmt } .
+
+    .               reduce using rule 14 (cmpExp -> CMP cond { stmt } .)
+
+
+state 80
+
+    (19) array_val -> IDENTIFIER [ IDENTIFIER ] .
+
+    +               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    -               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    /               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    *               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    %               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    <               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    >               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    =               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    NOTEQ           reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    .               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    )               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+    {               reduce using rule 19 (array_val -> IDENTIFIER [ IDENTIFIER ] .)
+
+
+state 81
+
+    (18) array_val -> IDENTIFIER [ CONSTANT ] .
+
+    +               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    -               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    /               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    *               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    %               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    <               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    >               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    =               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    NOTEQ           reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    .               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    )               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+    {               reduce using rule 18 (array_val -> IDENTIFIER [ CONSTANT ] .)
+
+
+state 82
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT . , CONSTANT , CONSTANT } stmt FINISH
+
+    ,               shift and go to state 87
+
+
+state 83
+
+    (9) arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ] .
+
+    .               reduce using rule 9 (arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ] .)
+
+
+state 84
+
+    (10) member -> CONSTANT member2 .
+
+    ]               reduce using rule 10 (member -> CONSTANT member2 .)
+
+
+state 85
+
+    (11) member2 -> , . CONSTANT member2
+
+    CONSTANT        shift and go to state 88
+
+
+state 86
+
+    (12) member2 -> empty . empty empty
+    (40) empty -> .
+
+    ]               reduce using rule 40 (empty -> .)
+
+    empty                          shift and go to state 89
+
+state 87
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , . CONSTANT , CONSTANT } stmt FINISH
+
+    CONSTANT        shift and go to state 90
+
+
+state 88
+
+    (11) member2 -> , CONSTANT . member2
+    (11) member2 -> . , CONSTANT member2
+    (12) member2 -> . empty empty empty
+    (40) empty -> .
+
+    ,               shift and go to state 85
+    ]               reduce using rule 40 (empty -> .)
+
+    member2                        shift and go to state 91
+    empty                          shift and go to state 86
+
 state 89
 
-    (11) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH .
+    (12) member2 -> empty empty . empty
+    (40) empty -> .
 
-    .               reduce using rule 11 (loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH .)
+    ]               reduce using rule 40 (empty -> .)
+
+    empty                          shift and go to state 92
+
+state 90
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT . , CONSTANT } stmt FINISH
+
+    ,               shift and go to state 93
+
+
+state 91
+
+    (11) member2 -> , CONSTANT member2 .
+
+    ]               reduce using rule 11 (member2 -> , CONSTANT member2 .)
+
+
+state 92
+
+    (12) member2 -> empty empty empty .
+
+    ]               reduce using rule 12 (member2 -> empty empty empty .)
+
+
+state 93
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , . CONSTANT } stmt FINISH
+
+    CONSTANT        shift and go to state 94
+
+
+state 94
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT . } stmt FINISH
+
+    }               shift and go to state 95
+
+
+state 95
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } . stmt FINISH
+    (1) stmt -> . stmt stmt
+    (2) stmt -> . assignExp .
+    (3) stmt -> . arrayExp .
+    (4) stmt -> . showExp .
+    (5) stmt -> . cmpExp .
+    (6) stmt -> . loopExp .
+    (7) assignExp -> . IDENTIFIER ASSIGN exp
+    (8) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
+    (9) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
+    (21) showExp -> . SHOW CONSTANT
+    (22) showExp -> . SHOW IDENTIFIER
+    (23) showExp -> . SHOW STRING
+    (14) cmpExp -> . CMP cond { stmt }
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+
+    IDENTIFIER      shift and go to state 7
+    t_CONSTANT      shift and go to state 8
+    ARRAY           shift and go to state 9
+    SHOW            shift and go to state 10
+    CMP             shift and go to state 11
+    LOOP            shift and go to state 12
+
+    stmt                           shift and go to state 96
+    assignExp                      shift and go to state 2
+    arrayExp                       shift and go to state 3
+    showExp                        shift and go to state 4
+    cmpExp                         shift and go to state 5
+    loopExp                        shift and go to state 6
+
+state 96
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt . FINISH
+    (1) stmt -> stmt . stmt
+    (1) stmt -> . stmt stmt
+    (2) stmt -> . assignExp .
+    (3) stmt -> . arrayExp .
+    (4) stmt -> . showExp .
+    (5) stmt -> . cmpExp .
+    (6) stmt -> . loopExp .
+    (7) assignExp -> . IDENTIFIER ASSIGN exp
+    (8) assignExp -> . t_CONSTANT IDENTIFIER ASSIGN exp
+    (9) arrayExp -> . ARRAY IDENTIFIER ASSIGN [ member ]
+    (21) showExp -> . SHOW CONSTANT
+    (22) showExp -> . SHOW IDENTIFIER
+    (23) showExp -> . SHOW STRING
+    (14) cmpExp -> . CMP cond { stmt }
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+
+    FINISH          shift and go to state 97
+    IDENTIFIER      shift and go to state 7
+    t_CONSTANT      shift and go to state 8
+    ARRAY           shift and go to state 9
+    SHOW            shift and go to state 10
+    CMP             shift and go to state 11
+    LOOP            shift and go to state 12
+
+    stmt                           shift and go to state 13
+    assignExp                      shift and go to state 2
+    arrayExp                       shift and go to state 3
+    showExp                        shift and go to state 4
+    cmpExp                         shift and go to state 5
+    loopExp                        shift and go to state 6
+
+state 97
+
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH .
+
+    .               reduce using rule 13 (loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH .)
 
 WARNING: 
 WARNING: Conflicts:
