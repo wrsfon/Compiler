@@ -38,7 +38,6 @@ str_prefix = '_LC'
 
 lexer = None
 
-
 def add_data(var_name, value):
     global asmdata
     asmdata += "%s db %s\n" % (var_name, value)
@@ -78,22 +77,32 @@ def multiple_stm_routine(stm1, stm2):
 def statement_main(stm):
     if stm[0] == 'assign':
         assign_routine(stm[1],stm[2])
-    try:
-        state_symbol = stm[0]
-        switcher = {
-            'assign': assign_routine,
-            'const_assign': const_assign_routine,
-            'array': declare_arr,
-            'loop':loop_routine,
-            'cmp': cmp_routine, 
-            'show': show_routine
-        }
-        func = switcher[state_symbol]
-        func(stm[1], stm[2])
-    except SystemExit:
-        sys.exit(1)
-    except:
-        pass
+    elif stm[0] == 'const_assign':
+        const_assign_routine(stm[1],stm[2])
+    elif stm[0] == 'array':
+        declare_arr(stm[1],stm[2])
+    elif stm[0] == 'loop':
+        loop_routine(stm[1],stm[2])
+    elif stm[0] == 'cmp':
+        cmp_routine(stm[1],stm[2])
+    elif stm[0] == 'show':
+        show_routine(stm[1],stm[2])
+    # try:
+    #     state_symbol = stm[0]
+    #     switcher = {
+    #         'assign': assign_routine,
+    #         'const_assign': const_assign_routine,
+    #         'array': declare_arr,
+    #         'loop':loop_routine,
+    #         'cmp': cmp_routine, 
+    #         'show': show_routine
+    #     }
+    #     func = switcher[state_symbol]
+    #     func(stm[1], stm[2])
+    # except SystemExit:
+    #     sys.exit(1)
+    # except:
+    #     pass
 
 def get_type(symbol):
     if type(symbol) is tuple:

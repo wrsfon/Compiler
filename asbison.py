@@ -116,15 +116,16 @@ def p_empty(p):
     pass
 
 def p_error(p):
-    if p:
-        if p.value == '\n':
-            print("Syntax error at line %d" % p.lineno)
-        else:
-            print("Syntax error at '%s' at line %d" %
-                  (p.value, p.lexer.lineno))
-    else:
-        print("Syntax error at EOF")
-    sys.exit(1)
+	pass
+    # if p:
+    #     if p.value == '\n':
+    #         print("Syntax error at line %d" % p.lineno)
+    #     else:
+    #         print("Syntax error at '%s' at line %d" %
+    #               (p.value, p.lexer.lineno))
+    # else:
+    #     print("Syntax error at EOF")
+    # sys.exit(1)
 
 
 parser = yacc.yacc()
