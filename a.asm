@@ -6,6 +6,7 @@ extern usleep
 global main
 section .data
 _fmin db "%ld", 0
+x db 0
 section .text
 _input:
 push rbp
@@ -20,6 +21,8 @@ leave
 ret
 main:
 push rbp
+mov rax, 4
+mov [x], rax
 xor rax, rax
 pop rbp
 ret

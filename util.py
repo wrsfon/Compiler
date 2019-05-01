@@ -76,6 +76,8 @@ def multiple_stm_routine(stm1, stm2):
     statement_main(stm2)
 
 def statement_main(stm):
+    if stm[0] == 'assign':
+        assign_routine(stm[1],stm[2])
     try:
         state_symbol = stm[0]
         switcher = {
@@ -112,8 +114,9 @@ def get_type(symbol):
 def get_var(symbol):
     if symbol not in global_var:
         global_var.append(symbol)
-        asmdata += "%s dq 0\n" % var_name
-    print_error("Use of undeclare variable %s" % symbol)
+        add_data(symbol,0)
+        # asmdata += "%s dq 0\n" % symbol
+    # print_error("Use of undeclare variable %s" % symbol)
     return symbol
 
 

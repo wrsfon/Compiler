@@ -10,8 +10,6 @@ import subprocess
 
 import platform
 
-import foo
-
 
 nasm_args = {'Linux': 'elf64', 'Darwin': 'macho64', 'Windows': 'win64'}
 
