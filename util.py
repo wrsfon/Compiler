@@ -98,8 +98,8 @@ def get_type(symbol):
         if symbol[0] == 'array':
             return 'ARRAY'
         return 'expression'
-    if symbol == 'array':
-        return 'ARRAY'
+    # if symbol == 'array':
+    #     return 'ARRAY'
     # if symbol == 'input':
     #     return 'INPUT'
     try:
@@ -112,7 +112,8 @@ def get_type(symbol):
 def get_var(symbol):
     if symbol not in global_var:
         global_var.append(symbol)
-    # print_error("Use of undeclare variable %s" % symbol)
+        asmdata += "%s dq 0\n" % var_name
+    print_error("Use of undeclare variable %s" % symbol)
     return symbol
 
 
@@ -139,7 +140,7 @@ def declare_var(var_name, value=0):
         if val_type == 'INPUT':
             asmdata += "%s dq 0\n" % var_name
             # input_routine()
-            add_text("mov [%s], rax" % var_name)
+            # add_text("mov [%s], rax" % var_name)
         elif val_type == 'CONSTANT':
             asmdata += "%s dq %s\n" % (var_name, value)
         elif val_type == 'ARRAY':

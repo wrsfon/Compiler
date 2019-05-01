@@ -19,7 +19,7 @@ Rule 9     arrayExp -> ARRAY IDENTIFIER ASSIGN [ member ]
 Rule 10    member -> CONSTANT member2
 Rule 11    member2 -> , CONSTANT member2
 Rule 12    member2 -> empty empty empty
-Rule 13    loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+Rule 13    loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 Rule 14    cmpExp -> CMP cond { stmt }
 Rule 15    val -> IDENTIFIER
 Rule 16    val -> CONSTANT
@@ -51,8 +51,8 @@ Rule 40    empty -> <empty>
 Terminals, with rules where they appear
 
 %                    : 32 37
-(                    : 39
-)                    : 39
+(                    : 13 39
+)                    : 13 39
 *                    : 31 36
 +                    : 28 33
 ,                    : 11 13 13
@@ -77,8 +77,8 @@ STRING               : 23
 ]                    : 9 18 19
 error                : 
 t_CONSTANT           : 8
-{                    : 13 14
-}                    : 13 14
+{                    : 14
+}                    : 14
 
 Nonterminals, with rules where they appear
 
@@ -114,7 +114,7 @@ state 0
     (22) showExp -> . SHOW IDENTIFIER
     (23) showExp -> . SHOW STRING
     (14) cmpExp -> . CMP cond { stmt }
-    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     IDENTIFIER      shift and go to state 7
     t_CONSTANT      shift and go to state 8
@@ -147,7 +147,7 @@ state 1
     (22) showExp -> . SHOW IDENTIFIER
     (23) showExp -> . SHOW STRING
     (14) cmpExp -> . CMP cond { stmt }
-    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     IDENTIFIER      shift and go to state 7
     t_CONSTANT      shift and go to state 8
@@ -268,7 +268,7 @@ state 11
 
 state 12
 
-    (13) loopExp -> LOOP . IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP . IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     IDENTIFIER      shift and go to state 33
 
@@ -290,7 +290,7 @@ state 13
     (22) showExp -> . SHOW IDENTIFIER
     (23) showExp -> . SHOW STRING
     (14) cmpExp -> . CMP cond { stmt }
-    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
   ! shift/reduce conflict for IDENTIFIER resolved as shift
   ! shift/reduce conflict for t_CONSTANT resolved as shift
@@ -648,7 +648,7 @@ state 32
 
 state 33
 
-    (13) loopExp -> LOOP IDENTIFIER . ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER . ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     ASSIGN          shift and go to state 55
 
@@ -724,7 +724,7 @@ state 37
     (22) showExp -> . SHOW IDENTIFIER
     (23) showExp -> . SHOW STRING
     (14) cmpExp -> . CMP cond { stmt }
-    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     IDENTIFIER      shift and go to state 7
     t_CONSTANT      shift and go to state 8
@@ -1151,9 +1151,9 @@ state 54
 
 state 55
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN . { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN . ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
-    {               shift and go to state 76
+    (               shift and go to state 76
 
 
 state 56
@@ -1199,7 +1199,7 @@ state 58
     (22) showExp -> . SHOW IDENTIFIER
     (23) showExp -> . SHOW STRING
     (14) cmpExp -> . CMP cond { stmt }
-    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     }               shift and go to state 79
     IDENTIFIER      shift and go to state 7
@@ -1553,7 +1553,7 @@ state 75
 
 state 76
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { . CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( . CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     CONSTANT        shift and go to state 82
 
@@ -1623,7 +1623,7 @@ state 81
 
 state 82
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT . , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT . , CONSTANT , CONSTANT ) stmt FINISH
 
     ,               shift and go to state 87
 
@@ -1660,7 +1660,7 @@ state 86
 
 state 87
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , . CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , . CONSTANT , CONSTANT ) stmt FINISH
 
     CONSTANT        shift and go to state 90
 
@@ -1689,7 +1689,7 @@ state 89
 
 state 90
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT . , CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT . , CONSTANT ) stmt FINISH
 
     ,               shift and go to state 93
 
@@ -1710,21 +1710,21 @@ state 92
 
 state 93
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , . CONSTANT } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , . CONSTANT ) stmt FINISH
 
     CONSTANT        shift and go to state 94
 
 
 state 94
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT . } stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT . ) stmt FINISH
 
-    }               shift and go to state 95
+    )               shift and go to state 95
 
 
 state 95
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } . stmt FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) . stmt FINISH
     (1) stmt -> . stmt stmt
     (2) stmt -> . assignExp .
     (3) stmt -> . arrayExp .
@@ -1738,7 +1738,7 @@ state 95
     (22) showExp -> . SHOW IDENTIFIER
     (23) showExp -> . SHOW STRING
     (14) cmpExp -> . CMP cond { stmt }
-    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     IDENTIFIER      shift and go to state 7
     t_CONSTANT      shift and go to state 8
@@ -1756,7 +1756,7 @@ state 95
 
 state 96
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt . FINISH
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt . FINISH
     (1) stmt -> stmt . stmt
     (1) stmt -> . stmt stmt
     (2) stmt -> . assignExp .
@@ -1771,7 +1771,7 @@ state 96
     (22) showExp -> . SHOW IDENTIFIER
     (23) showExp -> . SHOW STRING
     (14) cmpExp -> . CMP cond { stmt }
-    (13) loopExp -> . LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH
+    (13) loopExp -> . LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH
 
     FINISH          shift and go to state 97
     IDENTIFIER      shift and go to state 7
@@ -1790,9 +1790,9 @@ state 96
 
 state 97
 
-    (13) loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH .
+    (13) loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH .
 
-    .               reduce using rule 13 (loopExp -> LOOP IDENTIFIER ASSIGN { CONSTANT , CONSTANT , CONSTANT } stmt FINISH .)
+    .               reduce using rule 13 (loopExp -> LOOP IDENTIFIER ASSIGN ( CONSTANT , CONSTANT , CONSTANT ) stmt FINISH .)
 
 WARNING: 
 WARNING: Conflicts:
