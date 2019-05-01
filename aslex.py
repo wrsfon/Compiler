@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-tokens = ['IDENTIFIER','STRING','CONSTANT','NEWLINE','ASSIGN','NOTEQ']
+tokens = ['IDENTIFIER','STRING','CONSTANT','ASSIGN','NOTEQ']
 
 reserved = {
   'array':'ARRAY',
@@ -38,11 +38,11 @@ def t_error(t):
     t.lexer.skip(1)
 
 
-def t_NEWLINE(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-    t.type = 'NEWLINE'
-    return t
+# def t_NEWLINE(t):
+#     r'\n+'
+#     t.lexer.lineno += len(t.value)
+#     t.type = 'NEWLINE'
+#     return t
 
 
 def t_CONSTANT(t):

@@ -1,5 +1,8 @@
 import asbison
 
+lines = open('test.x', 'r').read()
+
+print(asbison.parse(lines, debug=True))
 
 while True:
     try:
