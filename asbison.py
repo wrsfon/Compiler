@@ -84,11 +84,11 @@ def p_cond_more(p):
 
 def p_cond_eq(p):
 	'cond : exp "=" exp'
-	p[0] = ('equal', p[1], p[3])
+	p[0] = ('=', p[1], p[3])
 
 def p_cond_noteq(p):
 	'cond : exp NOTEQ exp'
-	p[0] = ('notequal', p[1], p[3])
+	p[0] = ('!=', p[1], p[3])
 
 def p_exp_normal(p):
 	'''exp : exp "+" exp

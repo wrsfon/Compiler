@@ -257,25 +257,25 @@ def assign_routine(dest, source):
         add_text('mov [%s], rax' % dest)
 
 
-def if_routine(exp, stm, else_stm=None):
+def cmp_routine(exp, stm):
     global global_if_counter
     global_if_counter += 1
     exit_c = global_if_counter
     expression_main(exp)
     statement_main(stm)
-    if else_stm:
-        offset = 1
-        s = str(else_stm)
-        offset += s.count("'else'")
-        add_text("jmp _L%d" % (global_if_counter + offset))
+    # if else_stm:
+    #     offset = 1
+    #     s = str(else_stm)
+    #     offset += s.count("'else'")
+    #     add_text("jmp _L%d" % (global_if_counter + offset))
     add_text("_L%d:" % exit_c)
 
 
-def else_routine(stm):
-    global global_if_counter
-    statement_main(stm[1])
-    global_if_counter += 1
-    add_text("_L%d:" % global_if_counter)
+# def else_routine(stm):
+#     global global_if_counter
+#     statement_main(stm[1])
+#     global_if_counter += 1
+#     add_text("_L%d:" % global_if_counter)
 
 
 def while_routine(exp, stm):
@@ -655,7 +655,7 @@ def cmp_main(cmp_e):
     type_b = get_type(b)
     if type_a == 'expression':
         expression_main(a)
-    elif type_a == 'ID':
+    elif type_a == 'IDENTIFIER':
         get_var(a)
         add_text("mov rax, [%s]" % a)
     elif type_a == 'CONSTANT':
