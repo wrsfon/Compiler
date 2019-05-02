@@ -67,7 +67,6 @@ add_text("ret")
 add_text(main_entry)
 add_text("push rbp")
 
-
 cmp_symbol = ['=', '!=', '>', '<']
 
 def multiple_stm_routine(stm1, stm2):
@@ -87,29 +86,13 @@ def statement_main(stm):
         elif stm[0] == 'cmp':
             cmp_routine(stm[1],stm[2])
         elif stm[0] == 'show':
-            show_routine(stm[1],stm[2])
+            show_routine(stm[1])
         elif stm[0] == 'stmt_multi':
             multiple_stm_routine(stm[1],stm[2])
     except SystemExit:
         sys.exit(1)
     except:
         pass
-    # try:
-    #     state_symbol = stm[0]
-    #     switcher = {
-    #         'assign': assign_routine,
-    #         'const_assign': const_assign_routine,
-    #         'array': declare_arr,
-    #         'loop':loop_routine,
-    #         'cmp': cmp_routine, 
-    #         'show': show_routine
-    #     }
-    #     func = switcher[state_symbol]
-    #     func(stm[1], stm[2])
-    # except SystemExit:
-    #     sys.exit(1)
-    # except:
-    #     pass
 
 def get_type(symbol):
     if type(symbol) is tuple:
@@ -118,8 +101,8 @@ def get_type(symbol):
         return 'expression'
     # if symbol == 'array':
     #     return 'ARRAY'
-    # if symbol == 'input':
-    #     return 'INPUT'
+    if symbol[0]=='\"':
+        return 'STRING'
     try:
         int(symbol)
         return 'CONSTANT'
@@ -137,6 +120,7 @@ def get_var(symbol):
 
 
 def get_str(text):
+    # add_text("%s" %text)
     if text not in global_str:
         declare_string(text)
     return global_str[text]
@@ -205,8 +189,37 @@ def declare_arr(var_name, args):
         asmdata += '\n'
 
 def const_assign_routine(dest,source):
-    # add to const_var
-    pass
+    d_type = get_type(dest)
+    s_type = get_type(source)
+
+    if s_type == 'CONSTANT':
+        add_text('mov rax, ' + source)
+    elif s_type == 'ID':
+        get_var(source)
+        add_text('mov rax, [%s]' % source)
+    elif s_type == 'expression':
+        expression_main(source)
+    elif s_type == 'ARRAY':
+        index_type = get_type(source[2]) #check structure
+        get_var(source[1]) #check structure
+        if index_type == 'ID':
+            get_array_id(source)
+            add_text('mov rax, [rbx]')
+        elif index_type == 'CONSTANT':
+            add_text('mov rax, [%s + %s * 8]' % (source[1], source[2]))
+
+    if d_type == 'ARRAY':
+        index_type = get_type(dest[2])
+        if index_type == 'ID':
+            get_array_id(dest)
+            add_text('mov [rbx], rax')
+        elif index_type == 'CONSTANT':
+            add_text('mov [%s + %s * 8], rax' % (dest[1], dest[2]))
+    else:
+        get_var(dest)
+        add_text('mov [%s], rax' % dest)
+
+    const_var.append(dest)
 
 def assign_routine(dest, source):
     d_type = get_type(dest)
@@ -223,8 +236,6 @@ def assign_routine(dest, source):
         add_text('mov rax, [%s]' % source)
     elif s_type == 'expression':
         expression_main(source)
-    # elif s_type == 'INPUT':
-    #     input_routine()
     elif s_type == 'ARRAY':
         index_type = get_type(source[2]) #check structure
         get_var(source[1]) #check structure
@@ -282,74 +293,74 @@ def while_routine(exp, stm):
 
 def expression_main(exp, count=0):
     t = exp[0]
-    if t in cmp_symbol:
-        cmp_main(exp) #error
-    else:
-        switcher = {
-            '+': plus_routine,
-            '-': minus_routine,
-            '*': multiply_routine,
-            '/': divide_routine,
-            '%': mod_routine
-        }
+    if t == '+':
+        plus_routine(exp[1],exp[2],count)
+    elif t == '-':
+        minus_routine(exp[1],exp[2],count)
+    elif t == '*':
+        multiply_routine(exp[1],exp[2],count)
+    elif t == '/':
+        divide_routine(exp[1],exp[2],count)
+    elif t == '%':
+        mod_routine(exp[1],exp[2],count)
 
-        func = switcher[t]
-        func(exp[1], exp[2], count)
+    # if t in cmp_symbol:
+    #     cmp_main(exp) #error
+    # else:
+    #     switcher = {
+    #         '+': plus_routine,
+    #         '-': minus_routine,
+    #         '*': multiply_routine,
+    #         '/': divide_routine,
+    #         '%': mod_routine
+    #     }
 
-# def input_routine():
-#     add_text("call _input")
+    #     func = switcher[t]
+    #     func(exp[1], exp[2], count)
 
-
-def sleep_routine(mc, _):
-    mc_t = get_type(mc)
-    if mc_t == 'ID':
-        get_var(mc)
-        add_text("mov %s, [%s]" % (reg_order[0], mc))
-    elif mc_t == 'CONSTANT':
-        add_text("mov %s, %s" % (reg_order[0], mc))
-    elif mc_t == 'ARRAY':
-        index_type = get_type(mc[2])
-        if index_type == 'ID':
-            get_array_id(mc)
-            add_text('mov %s, [rbx]' % reg_order[0])
-        elif index_type == 'CONSTANT':
-            add_text('mov %s, [%s + %s * 8]' % (reg_order[0], mc[1], mc[2]))
-        else:
-            error_token()
-    else:
-        error_token()
-    add_text('imul rdi, 1000')
-    add_text('call ' + sleep_label)
-
-
-def print_routine(fmt, arg):
-    reg_c = 1
-    while arg[1] != None:
-        if arg[0] == 'argument':
-            a = arg[1]
-            a_type = get_type(a)
-            if a_type == 'CONSTANT':
-                add_text("mov %s, %s" % (reg_order[reg_c], a))
-            elif a_type == 'ID':
-                get_var(a)
-                add_text("mov %s, [%s]" % (reg_order[reg_c], a))
-            elif a_type == 'ARRAY':
-                index_type = get_type(a[2])
-                if index_type == 'ID':
-                    get_array_id(a)
-                    add_text('mov %s, [rbx]' % reg_order[reg_c])
-                elif index_type == 'CONSTANT':
-                    add_text('mov %s, [%s + %s * 8]' %
-                             (reg_order[reg_c], a[1], a[2]))
-            else:
-                expression_main(arg[1])
-                add_text("mov %s, rax" % reg_order[reg_c])
-        reg_c += 1
-        arg = arg[2]
-    add_text("mov %s, %s" % (reg_order[0], get_str(fmt)))
+def show_routine(arg):
+    # reg_c = 1
+    a = arg
+    a_type = get_type(a)
+    if a_type == 'CONSTANT':
+        add_text("mov %s, %s" % (reg_order[1], a))
+    elif a_type == 'ID':
+        get_var(a)
+        add_text("mov %s, [%s]" % (reg_order[1], a))
+    elif a_type == 'STRING':
+        get_var(a)
+        add_text("mov %s, %s" % (reg_order[0], get_str(a[1:-1])))
+    add_text("mov eax, 0")
     add_text("call " + printf_label)
     add_text("xor %s, %s" % (reg_order[0], reg_order[0]))
     add_text("call " + fflush_label)
+    # reg_c = 1
+    # while arg[1] != None:
+    #     if arg[0] == 'argument':
+    #         a = arg[1]
+    #         a_type = get_type(a)
+    #         if a_type == 'CONSTANT':
+    #             add_text("mov %s, %s" % (reg_order[reg_c], a))
+    #         elif a_type == 'ID':
+    #             get_var(a)
+    #             add_text("mov %s, [%s]" % (reg_order[reg_c], a))
+    #         elif a_type == 'ARRAY':
+    #             index_type = get_type(a[2])
+    #             if index_type == 'ID':
+    #                 get_array_id(a)
+    #                 add_text('mov %s, [rbx]' % reg_order[reg_c])
+    #             elif index_type == 'CONSTANT':
+    #                 add_text('mov %s, [%s + %s * 8]' %
+    #                          (reg_order[reg_c], a[1], a[2]))
+    #         else:
+    #             expression_main(arg[1])
+    #             add_text("mov %s, rax" % reg_order[reg_c])
+    #     reg_c += 1
+    #     arg = arg[2]
+    # add_text("mov %s, %s" % (reg_order[0], get_str(fmt)))
+    # add_text("call " + printf_label)
+    # add_text("xor %s, %s" % (reg_order[0], reg_order[0]))
+    # add_text("call " + fflush_label)
 
 def plus_routine(a, b, count=0):
     a_type = get_type(a)
@@ -707,7 +718,7 @@ def error_token():
 
 def print_error(error_str, show_line=True):
     if show_line:
-        print("ERROR : %s At line %d" % (error_str, lexer.lineno))
+        print("ERROR : %s At line %d" % (error_str, lexer.lineno)) #line number incorrect
     else:
         print("ERROR : %s" % error_str)
     sys.exit(1)
