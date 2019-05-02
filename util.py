@@ -110,12 +110,14 @@ def get_type(symbol):
         return 'ID'
 
 
-def get_var(symbol):
+def get_var(symbol,create=False):
     if symbol not in global_var:
-        global_var.append(symbol)
-        add_data(symbol,0)
+        if create:
+            global_var.append(symbol)
+            add_data(symbol,0)
         # asmdata += "%s dq 0\n" % symbol
-    # print_error("Use of undeclare variable %s" % symbol)
+        else:
+            print_error("Use of undeclare variable %s" % symbol)
     return symbol
 
 
@@ -216,7 +218,7 @@ def const_assign_routine(dest,source):
         elif index_type == 'CONSTANT':
             add_text('mov [%s + %s * 8], rax' % (dest[1], dest[2]))
     else:
-        get_var(dest)
+        get_var(dest,True)
         add_text('mov [%s], rax' % dest)
 
     const_var.append(dest)
@@ -253,7 +255,7 @@ def assign_routine(dest, source):
         elif index_type == 'CONSTANT':
             add_text('mov [%s + %s * 8], rax' % (dest[1], dest[2]))
     else:
-        get_var(dest)
+        get_var(dest,True)
         add_text('mov [%s], rax' % dest)
 
 
