@@ -68,6 +68,7 @@ add_text(main_entry)
 add_text("push rbp")
 
 cmp_symbol = ['=', '!=', '>', '<']
+loop_symbol = ['lp']
 
 def multiple_stm_routine(stm1, stm2):
     statement_main(stm1)
@@ -280,45 +281,80 @@ def cmp_routine(exp, stm):
 #     add_text("_L%d:" % global_if_counter)
 
 
-def while_routine(exp, stm):
+def loop_routine(exp, stm):
     global global_if_counter
+    global_if_counter += 1
     loop_c = global_if_counter
     exit_c = loop_c + 1
-    add_text("_L%d:" % loop_c)
-    global_if_counter += 1
-    expression_main(exp)
-    global_if_counter += 1
+    expression_main(exp,loop_c)
+    # global_if_counter += 1
     statement_main(stm)
+    add_text("pop rax")
     add_text("jmp _L%d" % loop_c)
     add_text("_L%d:" % exit_c)
     global_if_counter += 1
 
 def expression_main(exp, count=0):
     t = exp[0]
-    if t == '+':
-        plus_routine(exp[1],exp[2],count)
-    elif t == '-':
-        minus_routine(exp[1],exp[2],count)
-    elif t == '*':
-        multiply_routine(exp[1],exp[2],count)
-    elif t == '/':
-        divide_routine(exp[1],exp[2],count)
-    elif t == '%':
-        mod_routine(exp[1],exp[2],count)
+    if t in cmp_symbol:
+        cmp_main(exp) #error
+    elif t in loop_symbol:
+        loop_main(exp,count)
+    else:
+        switcher = {
+            '+': plus_routine,
+            '-': minus_routine,
+            '*': multiply_routine,
+            '/': divide_routine,
+            '%': mod_routine
+        }
 
-    # if t in cmp_symbol:
-    #     cmp_main(exp) #error
-    # else:
-    #     switcher = {
-    #         '+': plus_routine,
-    #         '-': minus_routine,
-    #         '*': multiply_routine,
-    #         '/': divide_routine,
-    #         '%': mod_routine
-    #     }
+        func = switcher[t]
+        func(exp[1], exp[2], count)
 
-    #     func = switcher[t]
-    #     func(exp[1], exp[2], count)
+# def input_routine():
+#     add_text("call _input")
+
+def loop_main(loop_e, count):
+    a = loop_e[1]
+    b = loop_e[2]
+    a_type = get_type(a)
+    if a_type == 'ID':
+        assign_routine(a,b[0])
+        get_var(a)
+        add_text("mov rax, [%s]" % a)
+        add_text("mov rbx, " + b[1])
+        global global_if_counter
+        add_text("_L%d:" % count)
+        global_if_counter += 1
+        add_text("cmp rax, rbx")
+        exit_c = count+1
+        add_text("jge _L%d" % exit_c)
+        add_text("add rax, " + b[2])
+        add_text("push rax")
+
+
+def sleep_routine(mc, _):
+    mc_t = get_type(mc)
+    if mc_t == 'ID':
+        get_var(mc)
+        add_text("mov %s, [%s]" % (reg_order[0], mc))
+    elif mc_t == 'CONSTANT':
+        add_text("mov %s, %s" % (reg_order[0], mc))
+    elif mc_t == 'ARRAY':
+        index_type = get_type(mc[2])
+        if index_type == 'ID':
+            get_array_id(mc)
+            add_text('mov %s, [rbx]' % reg_order[0])
+        elif index_type == 'CONSTANT':
+            add_text('mov %s, [%s + %s * 8]' % (reg_order[0], mc[1], mc[2]))
+        else:
+            error_token()
+    else:
+        error_token()
+    add_text('imul rdi, 1000')
+    add_text('call ' + sleep_label)
+
 
 def show_routine(arg):
     # reg_c = 1
@@ -657,7 +693,7 @@ def cmp_main(cmp_e):
     type_b = get_type(b)
     if type_a == 'expression':
         expression_main(a)
-    elif type_a == 'IDENTIFIER':
+    elif type_a == 'ID':
         get_var(a)
         add_text("mov rax, [%s]" % a)
     elif type_a == 'CONSTANT':

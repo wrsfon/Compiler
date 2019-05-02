@@ -46,8 +46,19 @@ def p_member2(p):
 	p[0] = (p[2],p[3])
 
 def p_loopExp(p):
-	'loopExp : LOOP IDENTIFIER ASSIGN "(" CONSTANT "," CONSTANT "," CONSTANT ")" stmt FINISH'
+	'loopExp : LOOP IDENTIFIER ASSIGN "(" CONSTANT "," CONSTANT "," exp ")" stmt FINISH'
 	p[0] = ("loop", p[2], p[5], p[7], p[9], p[11])
+# def p_loopExp(p):
+# 	'loopExp : LOOP assignL stmt FINISH'
+# 	p[0] = ("loop", p[2], p[3])
+
+def p_assignExp_loop(p):
+	'assignL : IDENTIFIER ASSIGN expL'
+	p[0] = ('lp',p[1],p[3])
+
+def p_expression_loop(p):
+    'expL : "(" CONSTANT "," CONSTANT "," CONSTANT ")"'
+    p[0] = (p[2], p[4], p[6])
 
 def p_cmpExp(p):
 	'cmpExp : CMP cond "{" stmt "}" '
@@ -96,6 +107,11 @@ def p_exp_normal(p):
 			| exp "/" exp
 			| exp "*" exp
 			| exp "%" exp
+			| exp "+" val
+			| exp "-" val
+			| exp "/" val
+			| exp "*" val
+			| exp "%" val
 			| val "+" val
 			| val "-" val
 			| val "/" val
@@ -116,16 +132,15 @@ def p_empty(p):
     pass
 
 def p_error(p):
-	pass
-    # if p:
-    #     if p.value == '\n':
-    #         print("Syntax error at line %d" % p.lineno)
-    #     else:
-    #         print("Syntax error at '%s' at line %d" %
-    #               (p.value, p.lexer.lineno))
-    # else:
-    #     print("Syntax error at EOF")
-    # sys.exit(1)
+    if p:
+        if p.value == '\n':
+            print("Syntax error at line %d" % p.lineno)
+        else:
+            print("Syntax error at '%s' at line %d" %
+                  (p.value, p.lexer.lineno))
+    else:
+        print("Syntax error at EOF")
+    sys.exit(1)
 
 
 parser = yacc.yacc()
