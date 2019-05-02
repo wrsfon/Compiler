@@ -29,6 +29,12 @@ mov rax, 6
 mov [a], rax
 mov rax, [x]
 mov [y], rax
+mov rbx, [y]
+cmp rax, rbx
+je _L1
+mov rax, 20
+mov [a], rax
+_L1:
 xor rax, rax
 pop rbp
 ret
