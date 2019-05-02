@@ -45,9 +45,20 @@ def p_member2(p):
 							| empty empty empty'''
 	p[0] = (p[2],p[3])
 
+# def p_loopExp(p):
+# 	'loopExp : LOOP IDENTIFIER ASSIGN "(" CONSTANT "," CONSTANT "," CONSTANT ")" stmt FINISH'
+# 	p[0] = ("loop", p[2], p[5], p[7], p[9], p[11])
 def p_loopExp(p):
-	'loopExp : LOOP IDENTIFIER ASSIGN "(" CONSTANT "," CONSTANT "," CONSTANT ")" stmt FINISH'
-	p[0] = ("loop", p[2], p[5], p[7], p[9], p[11])
+	'loopExp : LOOP assignL stmt FINISH'
+	p[0] = ("loop", p[2], p[3])
+
+def p_assignExp_loop(p):
+	'assignL : IDENTIFIER ASSIGN expL'
+	p[0] = ('lp',p[1],p[3])
+
+def p_expression_loop(p):
+    'expL : "(" CONSTANT "," CONSTANT "," CONSTANT ")"'
+    p[0] = (p[2], p[4], p[6])
 
 def p_cmpExp(p):
 	'cmpExp : CMP cond "{" stmt "}" '
