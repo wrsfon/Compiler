@@ -75,18 +75,25 @@ def multiple_stm_routine(stm1, stm2):
     statement_main(stm2)
 
 def statement_main(stm):
-    if stm[0] == 'assign':
-        assign_routine(stm[1],stm[2])
-    elif stm[0] == 'const_assign':
-        const_assign_routine(stm[1],stm[2])
-    elif stm[0] == 'array':
-        declare_arr(stm[1],stm[2])
-    elif stm[0] == 'loop':
-        loop_routine(stm[1],stm[2])
-    elif stm[0] == 'cmp':
-        cmp_routine(stm[1],stm[2])
-    elif stm[0] == 'show':
-        show_routine(stm[1],stm[2])
+    try:
+        if stm[0] == 'assign':
+            assign_routine(stm[1],stm[2])
+        elif stm[0] == 'const_assign':
+            const_assign_routine(stm[1],stm[2])
+        elif stm[0] == 'array':
+            declare_arr(stm[1],stm[2])
+        elif stm[0] == 'loop':
+            loop_routine(stm[1],stm[2])
+        elif stm[0] == 'cmp':
+            cmp_routine(stm[1],stm[2])
+        elif stm[0] == 'show':
+            show_routine(stm[1],stm[2])
+        elif stm[0] == 'stmt_multi':
+            multiple_stm_routine(stm[1],stm[2])
+    except SystemExit:
+        sys.exit(1)
+    except:
+        pass
     # try:
     #     state_symbol = stm[0]
     #     switcher = {

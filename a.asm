@@ -7,6 +7,7 @@ global main
 section .data
 _fmin db "%ld", 0
 x db 0
+a db 0
 y db 0
 section .text
 _input:
@@ -22,6 +23,10 @@ leave
 ret
 main:
 push rbp
+mov rax, 4
+mov [x], rax
+mov rax, 6
+mov [a], rax
 mov rax, [x]
 mov [y], rax
 xor rax, rax
